@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TigerAppWPF
 {
-    class Printer : IObserver
+    class Printer
     {
         private static Printer _instance;
         public List<Title> portfolioAffichage;
@@ -14,7 +14,6 @@ namespace TigerAppWPF
         private Printer()
         {
             this.portfolioAffichage = new List<Title>();
-            Engine.getEngine().registerObserver(this); 
         }
 
         public static Printer getPrinter()

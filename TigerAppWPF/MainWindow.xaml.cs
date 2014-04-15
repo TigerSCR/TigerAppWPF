@@ -20,13 +20,11 @@ namespace TigerAppWPF
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IObserver
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            //Pour être sur que les singleton soit instanciés
-            Engine.getEngine().registerObserver(this);
             //Printer.getPrinter();
 
         }

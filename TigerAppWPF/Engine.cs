@@ -6,7 +6,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace TigerAppWPF
 {
-    class Engine : ISubject
+    class Engine
     {
         //Static var for Singleton pattern
         private static Engine engine;
@@ -108,7 +108,6 @@ namespace TigerAppWPF
         public void getTitle()
         {
             this.portfolio = Connector.getConnector().getInfo(this.isins);
-            this.notifyObservers();
         }
 
         public void calculate()
@@ -125,24 +124,6 @@ namespace TigerAppWPF
                 result += eq.ToString() + "\n";
             }
             return result;
-        }
-    
-        //Implementing ISubject
-        private List<IObserver> observerCollection=new List<IObserver>();
-        public void registerObserver(IObserver observer)
-        {
-            this.observerCollection.Add(observer);
-        }
-        public void unregisterObserver(IObserver observer)
-        {
-            this.observerCollection.Remove(observer);
-        }
-        public void notifyObservers()
-        {
-            foreach (IObserver observer in this.observerCollection)
-            {
-                observer.notify();
-            }
         }
 
         //Setter & Getter
