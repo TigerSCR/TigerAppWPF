@@ -4,36 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="TigerAppWPF.MainWindow"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <DockPanel>
-            <Menu DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" d:IsLocked="True">
-                <MenuItem Header="Fichier">
-                    <MenuItem Header="Ouvrir" Click="MenuItem_Click"/>
-                    <MenuItem Header="Quitter"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Top" Background="White" Grid.Row="0">
+            <MenuItem Header="Fichier">
+                <MenuItem Header="Ouvrir" Click="MenuItem_Click"/>
+                <MenuItem Header="Quitter"/>
+            </MenuItem>
+            <MenuItem Header="Outils">
+                <MenuItem Header="Calculer">
+                    <MenuItem Header="SCR Equity" Click="Outils_Calculer_Equity_Click"/>
                 </MenuItem>
-                <MenuItem Header="Outils">
-                    <MenuItem Header="Calculer">
-                        <MenuItem Header="SCR Equity" Click="Outils_Calculer_Equity_Click"/>
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
-            <ListView Name="test" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Auto" Width="500" Height="280">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Isin}">
-                            <Label>ISIN
-                            </Label>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Qtty}">
-                            <Label>Quantité
-                            </Label>
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Value}">
-                            <Label>Valeur
-                            </Label>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </DockPanel>
+            </MenuItem>
+        </Menu>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Portfolio">
+                <ListView x:Name="portfolio" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Isin}">
+                                <Label Content="ISIN"/>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Qtty}">
+                                <Label Content="Quantité"/>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Value}">
+                                <Label Content="Valeur"/>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    <Grid Background="#FFE5E5E5"/>
+                </ListView>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

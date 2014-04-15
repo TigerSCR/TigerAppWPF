@@ -25,8 +25,7 @@ namespace TigerAppWPF
         public MainWindow()
         {
             InitializeComponent();
-            //Printer.getPrinter();
-
+            this.bind();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -69,8 +68,12 @@ namespace TigerAppWPF
             }
         }
 
-        public void notify()
-        { test.ItemsSource = Engine.getEngine().Portfolio; }
+        public void bind()
+        {
+            portfolio.Items.Clear();
+            portfolio.ItemsSource = Engine.getEngine().Portfolio;
+            MessageBox.Show("bindé");
+        }
 
         private void Outils_Calculer_Equity_Click(object sender, RoutedEventArgs e)
         {
