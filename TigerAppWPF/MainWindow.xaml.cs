@@ -25,7 +25,7 @@ namespace TigerAppWPF
         public MainWindow()
         {
             InitializeComponent();
-            this.bind();
+            //this.bind();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -72,7 +72,6 @@ namespace TigerAppWPF
         {
             portfolio.Items.Clear();
             portfolio.ItemsSource = Engine.getEngine().Portfolio;
-            MessageBox.Show("bindé");
         }
 
         private void Outils_Calculer_Equity_Click(object sender, RoutedEventArgs e)
