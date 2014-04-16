@@ -17,20 +17,15 @@ using System.IO;
 
 namespace TigerAppWPF
 {
-    public class Person
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IObserver
     {
         public MainWindow()
         {
             InitializeComponent();
-            //this.bind();
+            Engine.getEngine().registerObserver(this);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -73,15 +68,15 @@ namespace TigerAppWPF
             }
         }
 
-        public void bind()
-        {
-            portfolio.Items.Clear();
-            portfolio.ItemsSource = Engine.getEngine().Portfolio;
-        }
-
         private void Outils_Calculer_Equity_Click(object sender, RoutedEventArgs e)
         {
             Engine.getEngine().calculate();
+        }
+
+        public void notify()
+        {
+            portfolio.Items.Clear();
+            portfolio.ItemsSource = Engine.getEngine().Portfolio;
         }
     }
 }

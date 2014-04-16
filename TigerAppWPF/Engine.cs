@@ -14,13 +14,12 @@ namespace TigerAppWPF
 
 
         //Runtime var
-        public List<Title> portfolio{get;private set;}
+        private List<Title> portfolio;
         private List<Tuple<string,int,string>> isins=new List<Tuple<string,int,string>>();
 
         private Engine()
         {
             this.portfolio = new List<Title>();
-            //this.portfolio.Add(new Equity("sdfsdf", 5000));
         }
 
         public static Engine getEngine()
@@ -46,10 +45,8 @@ namespace TigerAppWPF
 
         public void getTitle()
         {
-           // this.portfolio[0].Qtty = 60;
             this.portfolio = Connector.getConnector().getInfo(this.isins);
-            /*MessageBox.Show("updated");
-            this.notifyObservers();*/
+            this.notifyObservers();
         }
 
         public void calculate()
@@ -87,6 +84,6 @@ namespace TigerAppWPF
         }
 
         public List<Title> Portfolio
-        { get { return this.portfolio; } }
+        { get { return Engine.getEngine().portfolio; } }
     }
 }
