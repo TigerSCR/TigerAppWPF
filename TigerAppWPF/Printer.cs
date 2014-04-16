@@ -8,7 +8,7 @@ namespace TigerAppWPF
 {
     class Printer : IObserver
     {
-        private static Printer _instance;
+        private static Printer printer;
         public List<Title> portfolioAffichage;
 
         private Printer()
@@ -19,11 +19,11 @@ namespace TigerAppWPF
 
         public static Printer getPrinter()
         {
-            if (_instance != null)
-                return _instance;
+            if (printer != null)
+                return printer;
             else
-                _instance = new Printer();
-            return _instance;
+                printer = new Printer();
+            return printer;
         }
 
         public void notify()

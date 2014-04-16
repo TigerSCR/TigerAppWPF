@@ -51,11 +51,8 @@ namespace TigerAppWPF
         {
             this.portfolio[0].Qtty = 60;
             this.portfolio = Connector.getConnector().getInfo(this.isins);
-<<<<<<< HEAD
             MessageBox.Show("updated");
-=======
             this.notifyObservers();
->>>>>>> parent of dda3a32... Removal of observable pattern
         }
 
         public void calculate()

@@ -21,7 +21,7 @@
         </Menu>
         <TabControl Grid.Row="1">
             <TabItem Header="Portfolio">
-                <ListView x:Name="portfolio" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView x:Name="portfolio" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding Source={StaticResource Portfolio}}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding Isin}">

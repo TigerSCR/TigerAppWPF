@@ -17,6 +17,11 @@ using System.IO;
 
 namespace TigerAppWPF
 {
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
