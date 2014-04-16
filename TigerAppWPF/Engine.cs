@@ -7,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows;
 namespace TigerAppWPF
 {
-    class Engine
+    class Engine : ISubject
     {
         //Static var for Singleton pattern
         private static Engine engine;
@@ -51,7 +51,11 @@ namespace TigerAppWPF
         {
             this.portfolio[0].Qtty = 60;
             this.portfolio = Connector.getConnector().getInfo(this.isins);
+<<<<<<< HEAD
             MessageBox.Show("updated");
+=======
+            this.notifyObservers();
+>>>>>>> parent of dda3a32... Removal of observable pattern
         }
 
         public void calculate()
@@ -68,6 +72,24 @@ namespace TigerAppWPF
                 result += eq.ToString() + "\n";
             }
             return result;
+        }
+    
+        //Implementing ISubject
+        private List<IObserver> observerCollection=new List<IObserver>();
+        public void registerObserver(IObserver observer)
+        {
+            this.observerCollection.Add(observer);
+        }
+        public void unregisterObserver(IObserver observer)
+        {
+            this.observerCollection.Remove(observer);
+        }
+        public void notifyObservers()
+        {
+            foreach (IObserver observer in this.observerCollection)
+            {
+                observer.notify();
+            }
         }
 
         public List<Title> Portfolio
