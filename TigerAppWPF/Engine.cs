@@ -11,25 +11,22 @@ namespace TigerAppWPF
     {
         //Static var for Singleton pattern
         private static Engine engine;
-        private Excel.Worksheet activeWorksheet;
 
 
         //Runtime var
-        private List<Title> portfolio;
+        public List<Title> portfolio{get;private set;}
         private List<Tuple<string,int,string>> isins=new List<Tuple<string,int,string>>();
 
         private Engine()
         {
             this.portfolio = new List<Title>();
-            this.portfolio.Add(new Equity("sdfsdf", 5000));
+            //this.portfolio.Add(new Equity("sdfsdf", 5000));
         }
 
-        public static Engine getEngine(Excel.Worksheet ws=null)
+        public static Engine getEngine()
         {
             if (engine == null)
                 engine = new Engine();
-            if (ws != null)
-                engine.activeWorksheet = ws;
             return engine;
         }
 
@@ -49,10 +46,10 @@ namespace TigerAppWPF
 
         public void getTitle()
         {
-            this.portfolio[0].Qtty = 60;
+           // this.portfolio[0].Qtty = 60;
             this.portfolio = Connector.getConnector().getInfo(this.isins);
-            MessageBox.Show("updated");
-            this.notifyObservers();
+            /*MessageBox.Show("updated");
+            this.notifyObservers();*/
         }
 
         public void calculate()
