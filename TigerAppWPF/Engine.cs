@@ -52,6 +52,7 @@ namespace TigerAppWPF
         public void calculate()
         {
             Repartiteur.getEngine().equity(this.portfolio);
+            this.notifyObservers();
         }
 
         public override string ToString()

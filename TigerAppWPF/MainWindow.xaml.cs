@@ -74,9 +74,19 @@ namespace TigerAppWPF
         }
 
         public void notify()
-        {
-            portfolio.Items.Clear();
+        {   
+            if(portfolio.ItemsSource==null)
+                portfolio.Items.Clear();
+            if (equitymodule.ItemsSource == null)
+                equitymodule.Items.Clear();
+
             portfolio.ItemsSource = Engine.getEngine().Portfolio;
+            equitymodule.ItemsSource = Repartiteur.getEngine().ModEqu.Results;
+        }
+
+        private void Fermeture_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

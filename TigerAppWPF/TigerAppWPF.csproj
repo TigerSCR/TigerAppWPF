@@ -59,7 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Printer.cs" />
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Title.cs" />
     <Page Include="MainWindow.xaml">
@@ -75,7 +74,6 @@
     <Compile Include="DataConfig.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Equity.cs" />
-    <Compile Include="FabriqueTitre.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="ISubject.cs" />
     <Compile Include="MainWindow.xaml.cs">

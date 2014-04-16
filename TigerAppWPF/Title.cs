@@ -16,6 +16,7 @@ namespace TigerAppWPF
         private bool oecd;
         private bool eu;
         private bool strategic = false;
+        private double total;
 
 
         #region donnees
@@ -102,18 +103,24 @@ namespace TigerAppWPF
                 this.oecd = true;
             if (l_eu.Contains(this.country))
                 this.eu = true;
+            this.total = this.value * this.qtty;
         }
 
         #region Accesseurs
         public string Isin
-        {
-            get{return this.isin;}
-        }
+        { get { return this.isin; } }
+        public string Currency
+        { get { return this.currency; } }
+        public double Total
+        { get { return this.total; } }
+
+        public string Name
+        { get { return this.name; } }
 
         public int Qtty
         {
             get { return this.qtty; }
-            set { this.qtty = value; }
+            set { this.qtty = value; this.total = this.value * this.qtty; }
         }
 
         public double Value

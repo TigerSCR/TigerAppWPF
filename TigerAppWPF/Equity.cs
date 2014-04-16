@@ -14,9 +14,5 @@ namespace TigerAppWPF
         public Equity(string _isin, int _qtty, string country, string currency, string name, double value)
             : base(_isin, _qtty, country, currency, name, value)
         {}
-
-        /*public Equity(Title _t)
-            : base(_t)
-        {}*/
     }
 }

@@ -24,5 +24,8 @@ namespace TigerAppWPF
             }
             return reponse;
         }
+
+        public Dictionary<Title, double> Results
+        { get { return this.results; } }
     }
 }
