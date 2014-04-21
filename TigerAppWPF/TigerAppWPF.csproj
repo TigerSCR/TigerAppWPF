@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CourbeSwap.cs" />
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Title.cs" />
     <Page Include="MainWindow.xaml">

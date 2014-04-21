@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bloomberglp.Blpapi;
-using System.Windows;
 //using BEmu;
 
 namespace TigerAppWPF
@@ -18,9 +17,11 @@ namespace TigerAppWPF
         private SessionOptions sessionOptions;
         static private Request request;
         static private List<Title> l_title;
-        static Dictionary<string, Tuple<int, string>> d_title;
+        static Dictionary<string,Tuple<int, string>> d_title;
 
         static private bool isGetType;
+        static private bool isGetCurve;
+        static private CourbeSwap c_libor = new CourbeSwap("EuroSwap");
 
         private Connector()
         {
@@ -55,25 +56,31 @@ namespace TigerAppWPF
             l_title = new List<Title>();
             if (!session.Start())
             {
-                MessageBox.Show("Could not start session.\n" + session.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Console.WriteLine("Could not start session.");
+                Console.WriteLine(session.ToString());
                 Remplissage_Non_connection();
                 return;
             }
             if (!session.OpenService("//blp/refdata"))
             {
-                MessageBox.Show("Could not open service " +
-                "//blp/refdata", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Console.WriteLine("Could not open service " +
+                "//blp/refdata");
                 return;
             }
             refDataSvc = session.GetService("//blp/refdata");
             if (refDataSvc == null)
             {
-                MessageBox.Show("Cannot get service", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Console.WriteLine("Cannot get service");
                 return;
             }
             else
             {
                 request = refDataSvc.CreateRequest("ReferenceDataRequest");
+                c_libor.SetRequest(request);
+                isGetCurve = true;
+                ResponseLoop();
+                isGetCurve = false;
+                Console.WriteLine(c_libor.ToString());
             }
         }
 
@@ -93,7 +100,7 @@ namespace TigerAppWPF
                 d_title.Add(tuple.Item1, new Tuple<int, string>(tuple.Item2, tuple.Item3));
             }
             isGetType = true;
-
+            
 
             foreach (var title in _d_title)
             {
@@ -101,18 +108,21 @@ namespace TigerAppWPF
                 request.Append("fields", "MARKET_SECTOR_DES");
             }
             ResponseLoop(); // Recupère les secteurs de marché
+
+            isGetType = false;
             ResponseLoop(); // Recupère les actions propres au secteur
 
             int qtty;
             foreach (Title title in l_title)
             {
                 qtty = d_title[title.Isin].Item1;
-
-                if (qtty == 0)
+                
+                if(qtty == 0)
                 {
                     throw new NotFoundException(title.Isin + " not found");
                 }
             }
+            d_title.Clear();
             return l_title;
         }
 
@@ -121,11 +131,12 @@ namespace TigerAppWPF
         /// </summary>
         static public void Remplissage_Non_connection()
         {
+            Console.WriteLine("Mode non connection, valeurs invalides");
             if (l_title.Count == 0)
             {
-                l_title.Add(new Equity("US03938L1044", 50, "LU", "USD", "ARCELORMITTAL-NY REGISTERED", 15.65));
-                l_title.Add(new Equity("US76218Y1038", 25, "US", "USD", "RHINO RESOURCE PARTNERS LP", 13.08));
-                l_title.Add(new Corp("XS0643300717", 100, "2011-06-30", "2014-07-07", "RCI BANQUE SA"));
+                l_title.Add(new Equity("US03938L1044", 0, "LU", "USD", "ARCELORMITTAL-NY REGISTERED", 15.65));
+                l_title.Add(new Equity("US76218Y1038", 0, "US", "USD", "RHINO RESOURCE PARTNERS LP", 13.08));
+                l_title.Add(new Corp("XS0643300717", 0, "2011-06-30", "2014-07-07", "RCI BANQUE SA"));
             }
         }
 
@@ -186,40 +197,64 @@ namespace TigerAppWPF
                         Element securityError = securityData.GetElement("securityError");
                         throw new Exception("securityError " + securityError.ToString());
                     }
+
                     else
                     {
                         Element fieldData = securityData.GetElement("fieldData");
 
-                        if (isGetType)
-                            marketSector = fieldData.GetElementAsString("MARKET_SECTOR_DES");
-                        else
-                            marketSector = d_title[security].Item2;
-
-                        switch (marketSector)
+                        if (isGetCurve)
                         {
-                            case "Equity":
-                                if (isGetType)
-                                    RequestEquity(security);
-                                else
-                                    ParseEquity(fieldData, security);
-                                break;
+                            c_libor.ParseEquity(fieldData);
+                        }
 
-                            case "Corp":
-                                if (isGetType)
-                                    RequestCorp(security);
-                                else
-                                    ParseCorp(fieldData, security);
-                                break;
+                        else
+                        {
 
-                            default:
-                                throw new FormatException("market sector invalid: " + marketSector);
+                            if (isGetType)
+                                marketSector = fieldData.GetElementAsString("MARKET_SECTOR_DES");
+                            else
+                                marketSector = d_title[security].Item2;
+
+                            switch (marketSector)
+                            {
+                                case "Equity":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
+                                    break;
+
+                                case "Corp":
+                                    if (isGetType)
+                                        RequestCorp(security);
+                                    else
+                                        ParseCorp(fieldData, security);
+                                    break;
+
+                                case "Govt":
+                                    break;
+
+                                case "Index":
+                                    break;
+
+                                case "Curncy":
+                                    break;
+
+                                case "Mmkt":
+                                    break;
+
+                                case "Mtge":
+                                    break;
+
+                                case "Muni":
+                                    break;
+
+                                default:
+                                    throw new FormatException("market sector invalid: " + marketSector);
+                            }
                         }
                     }
                 }
-            }
-            if (isGetType)
-            {
-                isGetType = false;
             }
         }
 
@@ -227,32 +262,11 @@ namespace TigerAppWPF
 
         static private void RequestCorp(string title)
         {
-            d_title[title] = new Tuple<int, string>(d_title[title].Item1, "Corp");
-            request.Append("securities", "/isin/" + title);
+            d_title[title] = new Tuple<int,string>(d_title[title].Item1, "Corp");
+            request.Append("securities", "/isin/"+title);
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "WORKOUT_DT_BID");
             request.Append("fields", "ISSUE_DT");
-            request.Append("fields", "NAME");
-        }
-
-        private static void ParseEquity(Element fieldData, string security)
-        {
-            string country = fieldData.GetElementAsString("COUNTRY_ISO");
-            double px_last = fieldData.GetElementAsFloat64("PX_LAST");
-            string currency = fieldData.GetElementAsString("CRNCY");
-            string name = fieldData.GetElementAsString("NAME");
-
-            Equity equit = new Equity(security, 0, country, currency, name, px_last);
-            l_title.Add(equit);
-        }
-
-        static private void RequestEquity(string title)
-        {
-            request.Append("securities", title);
-            //request.Append("fields", "MARKET_SECTOR_DES");
-            request.Append("fields", "PX_LAST");
-            request.Append("fields", "CRNCY");
-            request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "NAME");
         }
 
@@ -262,11 +276,36 @@ namespace TigerAppWPF
             string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
             string name = fieldData.GetElementAsString("NAME");
 
-            Corp corp = new Corp(security, 0, dateEmit, dateBack, name);
+            int qtty = d_title[security].Item1;
+            Corp corp = new Corp(security, qtty, dateEmit, dateBack, name);
             l_title.Add(corp);
         }
 
-        #endregion
+        static private void RequestEquity(string title)
+        {
+            d_title[title] = new Tuple<int, string>(d_title[title].Item1, "Equity");
+            request.Append("securities", "/isin/" + title);
+            //request.Append("fields", "MARKET_SECTOR_DES");
+            request.Append("fields", "PX_LAST");
+            request.Append("fields", "CRNCY");
+            request.Append("fields", "COUNTRY_ISO");
+            request.Append("fields", "NAME");
+        }
+
+
+        private static void ParseEquity(Element fieldData, string security)
+        {
+            string country = fieldData.GetElementAsString("COUNTRY_ISO");
+            double px_last = fieldData.GetElementAsFloat64("PX_LAST");
+            string currency = fieldData.GetElementAsString("CRNCY");
+            string name = fieldData.GetElementAsString("NAME");
+
+            int qtty = d_title[security].Item1;
+            Equity equit = new Equity(security, qtty, country, currency, name, px_last);
+            l_title.Add(equit);
+        }
+
+        #endregion 
 
 
         private static void handleOtherEvent(Event eventObj)
