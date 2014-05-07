@@ -37,7 +37,7 @@ namespace TigerAppWPF
 
             temp.Filter = "CSV files (*.csv)|*.csv";
             Nullable<bool> result = temp.ShowDialog();
-            if (result==true)
+            if (result == true)
             {
                 try
                 {
@@ -74,8 +74,8 @@ namespace TigerAppWPF
         }
 
         public void notify()
-        {   
-            if(portfolio.ItemsSource==null)
+        {
+            if (portfolio.ItemsSource == null)
                 portfolio.Items.Clear();
             if (equitymodule.ItemsSource == null)
                 equitymodule.Items.Clear();
