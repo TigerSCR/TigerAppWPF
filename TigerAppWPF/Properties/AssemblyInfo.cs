@@ -10,22 +10,22 @@ using System.Windows;
 [assembly: AssemblyTitle("TigerAppWPF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("TigerAppWPF")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
-// aux composants COM.  Si vous devez accéder à un type dans cet assembly à partir de 
+// aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 
 // COM, affectez la valeur true à l'attribut ComVisible sur ce type.
 [assembly: ComVisible(false)]
 
 //Pour commencer à générer des applications localisables, définissez 
 //<UICulture>CultureYouAreCodingWith</UICulture> dans votre fichier .csproj
-//dans <PropertyGroup>.  Par exemple, si vous utilisez le français
-//dans vos fichiers sources, définissez <UICulture> à fr-FR.  Puis, supprimez les marques de commentaire de
-//l'attribut NeutralResourceLanguage ci-dessous.  Mettez à jour "fr-FR" dans
+//dans <PropertyGroup>. Par exemple, si vous utilisez le français
+//dans vos fichiers sources, définissez <UICulture> à fr-FR. Puis, supprimez les marques de commentaire de
+//l'attribut NeutralResourceLanguage ci-dessous. Mettez à jour "fr-FR" dans
 //la ligne ci-après pour qu'elle corresponde au paramètre UICulture du fichier projet.
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
