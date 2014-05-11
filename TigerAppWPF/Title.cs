@@ -9,118 +9,70 @@ namespace TigerAppWPF
     {
         private string isin;
         private int qtty;
+        private int nominale;
         private string country;
         private string name;
         private double value;
         private string currency;
-        private bool oecd;
-        private bool eu;
+        private bool oecd = false;
+        private bool eu= false;
         private bool strategic = false;
-        private double total;
+        private bool volume_valide;
+        private DataConfig config;
 
-
-        #region donnees
-        private List<string> l_oecd = new List<string>{
-            "AU",
-            "AT",
-            "BE",
-            "CA",
-            "CL",
-            "CZ",
-            "DK",
-            "EE",
-            "FI",
-            "FR",
-            "DE",
-            "GR",
-            "HU",
-            "IS",
-            "IE",
-            "IL",
-            "IT",
-            "JP",
-            "KR",
-            "LU",
-            "MX",
-            "NL",
-            "NZ",
-            "NO",
-            "PL",
-            "PT",
-            "SK",
-            "SI",
-            "ES",
-            "SE",
-            "CH",
-            "TR",
-            "GB",
-            "US"};
-        private List<string> l_eu = new List<string>{
-            "AU",
-            "BE",
-            "BG",
-            "HR",
-            "CY",
-            "CZ",
-            "EE",
-            "FI",
-            "FR",
-            "DE",
-            "GR",
-            "HU",
-            "IE",
-            "IT",
-            "LV",
-            "LT",
-            "LU",
-            "MT",
-            "NL",
-            "PL",
-            "PT",
-            "RO",
-            "SK",
-            "SI",
-            "ES",
-            "SE",
-            "GB"};
-            #endregion
-
-        public Title(string _isin, int _qtty)
+        public Title(string _isin, int _qtty, int _nominale)
         {
             this.isin = _isin;
             this.qtty = _qtty;
+            this.nominale = _nominale;
+            VolumeValide();
         }
 
-        public Title(string _isin, int _qtty, string country, string currency, string name, double value)
+        public Title(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value)
         {
             this.isin = _isin;
             this.qtty = _qtty;
+            this.nominale = _nominale;
             this.country = country;
             this.currency = currency;
             this.name = name;
             this.value = value;
-            if (l_oecd.Contains(this.country))
+
+            config = DataConfig.getDataConfig();
+            if (config.ListOCDE.Contains(this.country))
                 this.oecd = true;
-            if (l_eu.Contains(this.country))
+            if (config.ListUE.Contains(this.country))
                 this.eu = true;
-            this.total = this.value * this.qtty;
         }
 
         #region Accesseurs
         public string Isin
-        { get { return this.isin; } }
-        public string Currency
-        { get { return this.currency; } }
-        public double Total
-        { get { return this.total; } }
-
-        public string Name
-        { get { return this.name; } }
+        {
+            get{return this.isin;}
+        }
 
         public int Qtty
         {
             get { return this.qtty; }
-            set { this.qtty = value; this.total = this.value * this.qtty; }
+            set { this.qtty = value; }
+        }
+
+        public long Volume()
+        {
+            return nominale*qtty;
+        }
+
+        private void VolumeValide()
+        {
+            if (Volume() > 5000000)
+                volume_valide = false;
+            else
+                volume_valide = true;
+        }
+
+        public bool GetVolumeValide
+        {
+            get { return volume_valide; }
         }
 
         public double Value
@@ -137,6 +89,14 @@ namespace TigerAppWPF
         override public string ToString()
         {
             return isin + " : Pays : " + country + " Nom : " + name + " = "+qtty+ "(" + value+" "+ currency+")";
+        }
+
+        virtual public string ToCSV()
+        {
+            if (name != null)
+                return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value;
+            else
+                return isin + ";" + qtty;
         }
     }
 }

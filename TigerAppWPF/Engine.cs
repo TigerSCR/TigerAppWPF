@@ -14,7 +14,7 @@ namespace TigerAppWPF
 
         //Runtime var
         private List<Title> portfolio;
-        private List<Tuple<string,int,string>> isins=new List<Tuple<string,int,string>>();
+        private List<Tuple<string,int,int>> isins=new List<Tuple<string,int,int>>();
 
         private Engine()
         {
@@ -37,7 +37,7 @@ namespace TigerAppWPF
                     ArgumentException except = new ArgumentException();
                     throw except;
                 }
-                this.isins.Add(new Tuple<string,int,string>(i.Item1, i.Item2,"test"));
+                this.isins.Add(new Tuple<string,int,int>(i.Item1, i.Item2, 1));
             }
             this.getTitle();
         }
