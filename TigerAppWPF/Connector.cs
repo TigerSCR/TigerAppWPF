@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bloomberglp.Blpapi;
+using System.IO;
 //using BEmu;
 
 namespace TigerAppWPF
@@ -17,11 +18,11 @@ namespace TigerAppWPF
         private SessionOptions sessionOptions;
         static private Request request;
         static private List<Title> l_title;
-        static Dictionary<string,Tuple<int, string>> d_title;
+        static Dictionary<string,Tuple<int, int, string>> d_title;
 
         static private bool isGetType;
         static private bool isGetCurve;
-        static private CourbeSwap c_libor = new CourbeSwap("EuroSwap");
+        static private CourbeSwap curve;
 
         private Connector()
         {
@@ -43,6 +44,7 @@ namespace TigerAppWPF
             }
             return _instance;
         }
+        
 
         /// <summary>
         /// Etablie la connection avec Bloomberg
@@ -76,11 +78,6 @@ namespace TigerAppWPF
             else
             {
                 request = refDataSvc.CreateRequest("ReferenceDataRequest");
-                c_libor.SetRequest(request);
-                isGetCurve = true;
-                ResponseLoop();
-                isGetCurve = false;
-                Console.WriteLine(c_libor.ToString());
             }
         }
 
@@ -89,15 +86,15 @@ namespace TigerAppWPF
         /// </summary>
         /// <param name="d_title">Isin avec leurs quantité</param>
         /// <returns>la liste de Titre avec les informations remplit</returns>
-        public List<Title> getInfo(List<Tuple<string, int, string>> _d_title)
+        public List<Title> getInfo(List<Tuple<string, int, int>> _d_title)
         {
             if (l_title.Count != 0)
                 return l_title;
 
-            d_title = new Dictionary<string, Tuple<int, string>>();
+            d_title = new Dictionary<string, Tuple<int, int, string>>();
             foreach (var tuple in _d_title)
             {
-                d_title.Add(tuple.Item1, new Tuple<int, string>(tuple.Item2, tuple.Item3));
+                d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
             }
             isGetType = true;
             
@@ -107,23 +104,28 @@ namespace TigerAppWPF
                 request.Append("securities", "/isin/" + title.Item1);
                 request.Append("fields", "MARKET_SECTOR_DES");
             }
+
             ResponseLoop(); // Recupère les secteurs de marché
 
             isGetType = false;
             ResponseLoop(); // Recupère les actions propres au secteur
 
-            int qtty;
-            foreach (Title title in l_title)
-            {
-                qtty = d_title[title.Isin].Item1;
-                
-                if(qtty == 0)
-                {
-                    throw new NotFoundException(title.Isin + " not found");
-                }
-            }
             d_title.Clear();
+            this.WriteCSV();
             return l_title;
+        }
+
+        public CourbeSwap GetCurve(string _isin)
+        {
+            if (curve == null || curve.isin != _isin)
+            {
+                curve = new CourbeSwap("EuroSwap", _isin, "BLC2 Curncy");// isin euroswap : "S0045Z"
+                curve.SetRequest(request);
+                isGetCurve = true;
+                ResponseLoop();
+                isGetCurve = false;
+            }
+            return curve;
         }
 
         /// <summary>
@@ -132,12 +134,8 @@ namespace TigerAppWPF
         static public void Remplissage_Non_connection()
         {
             Console.WriteLine("Mode non connection, valeurs invalides");
-            if (l_title.Count == 0)
-            {
-                l_title.Add(new Equity("US03938L1044", 0, "LU", "USD", "ARCELORMITTAL-NY REGISTERED", 15.65));
-                l_title.Add(new Equity("US76218Y1038", 0, "US", "USD", "RHINO RESOURCE PARTNERS LP", 13.08));
-                l_title.Add(new Corp("XS0643300717", 0, "2011-06-30", "2014-07-07", "RCI BANQUE SA"));
-            }
+            ReadCSV();
+            //curve.ReadCSV();
         }
 
         /// <summary>
@@ -183,6 +181,7 @@ namespace TigerAppWPF
                     Console.WriteLine("Mode non connecté");
                     Remplissage_Non_connection();
                 }
+
                 Element securityDataArray = ReferenceDataResponse.GetElement("securityData");
                 //Console.WriteLine(message.ToString());
 
@@ -190,7 +189,10 @@ namespace TigerAppWPF
                 for (int i = 0; i < numItems; ++i)
                 {
                     Element securityData = securityDataArray.GetValueAsElement(i);
-                    string security = securityData.GetElementAsString("security").Replace("/isin/", "");
+                    string security = securityData.GetElementAsString("security");
+                    if(!isGetCurve)
+                        security = security.Replace("/isin/", "");
+
                     //int sequenceNumber = securityData.GetElementAsInt32("sequenceNumber");
                     if (securityData.HasElement("securityError"))
                     {
@@ -204,7 +206,7 @@ namespace TigerAppWPF
 
                         if (isGetCurve)
                         {
-                            c_libor.ParseEquity(fieldData);
+                            curve.ParseEquity(fieldData);
                         }
 
                         else
@@ -213,7 +215,7 @@ namespace TigerAppWPF
                             if (isGetType)
                                 marketSector = fieldData.GetElementAsString("MARKET_SECTOR_DES");
                             else
-                                marketSector = d_title[security].Item2;
+                                marketSector = d_title[security].Item3;
 
                             switch (marketSector)
                             {
@@ -232,21 +234,45 @@ namespace TigerAppWPF
                                     break;
 
                                 case "Govt":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 case "Index":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 case "Curncy":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 case "Mmkt":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 case "Mtge":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 case "Muni":
+                                    if (isGetType)
+                                        RequestEquity(security);
+                                    else
+                                        ParseEquity(fieldData, security);
                                     break;
 
                                 default:
@@ -262,7 +288,7 @@ namespace TigerAppWPF
 
         static private void RequestCorp(string title)
         {
-            d_title[title] = new Tuple<int,string>(d_title[title].Item1, "Corp");
+            d_title[title] = new Tuple<int,int,string>(d_title[title].Item1,d_title[title].Item2, "Corp");
             request.Append("securities", "/isin/"+title);
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "WORKOUT_DT_BID");
@@ -276,14 +302,14 @@ namespace TigerAppWPF
             string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
             string name = fieldData.GetElementAsString("NAME");
 
-            int qtty = d_title[security].Item1;
-            Corp corp = new Corp(security, qtty, dateEmit, dateBack, name);
+            curve.GetValue(dateEmit);
+            Corp corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, dateEmit, dateBack, name);
             l_title.Add(corp);
         }
 
         static private void RequestEquity(string title)
         {
-            d_title[title] = new Tuple<int, string>(d_title[title].Item1, "Equity");
+            d_title[title] = new Tuple<int, int, string>(d_title[title].Item1, 0, "Equity");
             request.Append("securities", "/isin/" + title);
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "PX_LAST");
@@ -300,12 +326,54 @@ namespace TigerAppWPF
             string currency = fieldData.GetElementAsString("CRNCY");
             string name = fieldData.GetElementAsString("NAME");
 
-            int qtty = d_title[security].Item1;
-            Equity equit = new Equity(security, qtty, country, currency, name, px_last);
+            Equity equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last);
             l_title.Add(equit);
         }
 
         #endregion 
+
+
+        #region CSV
+
+        public void WriteCSV()
+        {
+            using (StreamWriter sw = new StreamWriter(@"CSV\Titres.csv"))
+            {
+                foreach (var title in l_title)
+                {
+                    sw.WriteLine(title.ToCSV());
+                }
+                sw.Close();
+            }
+        }
+
+        static public void ReadCSV()
+        {
+            // Read and show each line from the file.
+            string line = "";
+            string[] values;
+            Console.WriteLine("Lecture CSV, ancienne liste Title ecrasée");
+            l_title.Clear();
+            using (StreamReader sr = new StreamReader(@"CSV\Titres.csv"))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    values = line.Split(';');
+                    switch (values[0])
+                    {
+                        case "Equity":
+                            l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6])));
+                            break;
+                        case "Corp":
+                            l_title.Add(new Corp(values[1], int.Parse(values[2]),100, values[3], values[4], values[5]));
+                            break;
+                    }
+                }
+                sr.Close();
+            }
+        }
+
+        #endregion
 
 
         private static void handleOtherEvent(Event eventObj)
