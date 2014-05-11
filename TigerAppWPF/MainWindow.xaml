@@ -72,7 +72,10 @@
                                 <Label Content="NAME"/>
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Value}">
-                                <Label Content="SCR"/>
+                                <Label Content="SCR €"/>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Value}">
+                                <Label Content="SCR %"/>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>

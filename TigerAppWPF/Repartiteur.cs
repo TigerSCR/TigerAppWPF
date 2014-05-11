@@ -39,7 +39,6 @@ namespace TigerAppWPF
                     temp.Add(t);
             }
             this.modEqu = new ModuleEquity(temp);
-            MessageBox.Show(this.modEqu.ToString());
         }
 
         public ModuleEquity ModEqu

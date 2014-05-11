@@ -13,6 +13,7 @@ namespace TigerAppWPF
         private string country;
         private string name;
         private double value;
+        private double total;
         private string currency;
         private bool oecd = false;
         private bool eu= false;
@@ -43,24 +44,39 @@ namespace TigerAppWPF
                 this.oecd = true;
             if (config.ListUE.Contains(this.country))
                 this.eu = true;
+
+            this.total = this.value * this.qtty;
         }
 
         #region Accesseurs
         public string Isin
-        {
-            get{return this.isin;}
-        }
-
+        { get{return this.isin;} }
         public int Qtty
         {
             get { return this.qtty; }
             set { this.qtty = value; }
         }
-
         public long Volume()
-        {
-            return nominale*qtty;
-        }
+        { return nominale*qtty; }
+        public bool GetVolumeValide
+        { get { return volume_valide; } }
+        public double Value
+        { get { return this.value; } }    
+        public bool Oecd
+        { get { return this.oecd; } }
+        public bool Eu
+        { get { return this.eu; } }
+        public bool Strategic
+        { get { return this.strategic; } }
+        public string Name
+        { get { return this.name; } }
+        public string Country
+        { get { return this.country; } }
+        public string Currency
+        { get { return this.currency; } }
+        public double Total
+        { get { return this.total; } }
+        #endregion
 
         private void VolumeValide()
         {
@@ -69,23 +85,6 @@ namespace TigerAppWPF
             else
                 volume_valide = true;
         }
-
-        public bool GetVolumeValide
-        {
-            get { return volume_valide; }
-        }
-
-        public double Value
-        { get { return this.value; } }
-        
-        public bool Oecd
-        { get { return this.oecd; } }
-        public bool Eu
-        { get { return this.eu; } }
-        public bool Strategic
-        { get { return this.strategic; } }
-        #endregion
-
         override public string ToString()
         {
             return isin + " : Pays : " + country + " Nom : " + name + " = "+qtty+ "(" + value+" "+ currency+")";

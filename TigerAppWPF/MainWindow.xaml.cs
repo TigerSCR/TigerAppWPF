@@ -22,6 +22,7 @@ namespace TigerAppWPF
     /// </summary>
     public partial class MainWindow : Window, IObserver
     {
+        private bool initialized = false;//definit si le portofolio existe pour éviter l'overrun du binding
         public MainWindow()
         {
             InitializeComponent();
@@ -63,7 +64,7 @@ namespace TigerAppWPF
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message + "\n" + ex.TargetSite + "\n" + ex.StackTrace + "\n" + ex.HelpLink);
                 }
             }
         }
@@ -80,8 +81,15 @@ namespace TigerAppWPF
             if (equitymodule.ItemsSource == null)
                 equitymodule.Items.Clear();
 
-            portfolio.ItemsSource = Engine.getEngine().Portfolio;
-            equitymodule.ItemsSource = Repartiteur.getEngine().ModEqu.Results;
+            if (!initialized)
+            {
+                portfolio.ItemsSource = Engine.getEngine().Portfolio;
+            }
+            else
+            {
+                equitymodule.ItemsSource = Repartiteur.getEngine().ModEqu.Results;
+            }
+            initialized = true;
         }
 
         private void Fermeture_Click(object sender, RoutedEventArgs e)
