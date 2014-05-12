@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Windows;
 
 namespace TigerAppWPF
 {
@@ -49,8 +50,7 @@ namespace TigerAppWPF
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Erreur");
-                Console.WriteLine(ex);
+                MessageBox.Show("Attention Problèmes de données : " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             XmlNodeList myChildNode = unxml.GetElementsByTagName("pays");
