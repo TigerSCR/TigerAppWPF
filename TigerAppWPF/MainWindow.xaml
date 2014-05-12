@@ -80,6 +80,126 @@
                     </ListView.View>
                 </ListView>
             </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule1" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule2" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule3" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule4" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule5" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
+            <TabItem Header="Equity Module" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic" Margin="-2,-2,0,-2">
+            	<ListView x:Name="equitymodule6" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            		<ListView.View>
+            			<GridView>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Isin}">
+            					<Label Content="ISIN"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Key.Name}">
+            					<Label Content="NAME"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR €"/>
+            				</GridViewColumn>
+            				<GridViewColumn DisplayMemberBinding="{Binding Value}">
+            					<Label Content="SCR %"/>
+            				</GridViewColumn>
+            			</GridView>
+            		</ListView.View>
+            	</ListView>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
