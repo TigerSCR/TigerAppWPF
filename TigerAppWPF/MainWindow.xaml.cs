@@ -27,6 +27,9 @@ namespace TigerAppWPF
         {
             InitializeComponent();
             Engine.getEngine().registerObserver(this);
+            Assistant ast=new Assistant();
+            ast.ShowDialog();
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

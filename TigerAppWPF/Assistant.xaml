@@ -1,0 +1,21 @@
+﻿<Window x:Class="TigerAppWPF.Assistant"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Assistant" Height="200" Width="300" Background="Black">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image Source="/TigerAppWPF;component/Images/CT0650.png"></Image>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="12" Name="creerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Créer un&#xa;nouveau profil" />
+            <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="12" Name="chargerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Charger un&#xa;profil existant" />
+        </Grid>
+    </Grid>
+</Window>
