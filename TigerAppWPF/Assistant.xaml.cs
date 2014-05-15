@@ -22,5 +22,11 @@ namespace TigerAppWPF
         {
             InitializeComponent();
         }
+
+        private void creerProfil_Click(object sender, RoutedEventArgs e)
+        {
+            creationProfil cp = new creationProfil();
+            cp.ShowDialog();
+        }
     }
 }

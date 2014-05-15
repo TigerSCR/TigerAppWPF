@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TigerAppWPF.Assistant"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Assistant" Height="200" Width="300" Background="#FF505050">
+        Title="Assistant" Height="200" Width="300" Background="#FF505050" FontFamily="Century Gothic">
     
     <Grid >
         <Grid.RowDefinitions>
@@ -13,9 +13,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="12" Name="creerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Créer un&#xa;nouveau profil" />
-            <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="12" Name="chargerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Charger un&#xa;profil existant" />
+            <Button Foreground="#FFD17200" Grid.Column="0" HorizontalAlignment="Stretch" Margin="12" Name="creerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Créer un&#xa;nouveau profil" Click="creerProfil_Click" />
+            <Button Foreground="#FFD17200" Grid.Column="1" HorizontalAlignment="Stretch" Margin="12" Name="chargerProfil" VerticalAlignment="Stretch" Padding="12" ClipToBounds="True" Content="Charger un&#xa;profil existant" />
         </Grid>
-        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,0" Name="textBlock1" VerticalAlignment="Center" Text="Tiger SCR&#xa;Calculator" FontFamily="Century Gothic" FontSize="26" Foreground="#3CFFFFFF" />
+        <TextBlock HorizontalAlignment="Center" Margin="0,0,0,0" Name="textBlock1" VerticalAlignment="Center" Text="Tiger SCR&#xa;Calculator" FontSize="26" Foreground="#3CFFFFFF" />
     </Grid>
 </Window>
