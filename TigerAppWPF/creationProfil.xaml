@@ -4,33 +4,37 @@
 	x:Class="TigerAppWPF.creationProfil"
 	x:Name="Window"
 	Title="Création d'un profil"
-	Width="300" Height="480" Background="#FF505050">
+	Width="300" Height="200" Background="#FF505050"
+	FontFamily="Century Gothic">
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-		<Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#3CFFFFFF">
-			Nom de l'Entreprise</Label>
-		<Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#3CFFFFFF">
-			Pays</Label>
-			</Grid>
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<Button Grid.Row=""
-			</Grid>
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#3CFFFFFF" FontFamily="Century Gothic">
+				Nom de l'Entreprise</Label>
+			<Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#3CFFFFFF" FontFamily="Century Gothic">
+				Pays</Label>
+				<TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+				<TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100"/>
+		</Grid>
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Button Grid.Row="0" Content="Créer" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="20"/>
+			<Label Grid.Row="1" HorizontalAlignment="Center"	VerticalAlignment="Center" Foreground="#3CFFFFFF">Test explication</Label>
+		</Grid>
 	</Grid>
 </Window>
