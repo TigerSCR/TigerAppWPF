@@ -124,13 +124,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\CT0650.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\white tiger.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\black tiger.png" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
