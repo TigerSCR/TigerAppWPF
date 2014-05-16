@@ -21,17 +21,18 @@ namespace TigerAppWPF
 
         protected override void calculate(List<Title> source)
         {
+            //formula
             for(int i=0;i<source.Count;i++)
             {
                     if (!source.ElementAt(i).Strategic)
                     {
                         if (source.ElementAt(i).Oecd || source.ElementAt(i).Eu)
-                            results.Add(source.ElementAt(i),source.ElementAt(i).Value * (chocEquity + symAdjust) * source.ElementAt(i).Qtty);
+                            results.Add(source.ElementAt(i),source.ElementAt(i).Total * (chocEquity + symAdjust));
                         else
-                            results.Add(source.ElementAt(i),source.ElementAt(i).Value * (chocOtherEquity + symAdjust) * source.ElementAt(i).Qtty);
+                            results.Add(source.ElementAt(i),source.ElementAt(i).Total * (chocOtherEquity + symAdjust));
                     }
                     else
-                        results.Add(source.ElementAt(i),source.ElementAt(i).Value * strategic * source.ElementAt(i).Qtty);
+                        results.Add(source.ElementAt(i),source.ElementAt(i).Total * strategic);
             }
         }
     }

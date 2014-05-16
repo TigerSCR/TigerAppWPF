@@ -66,6 +66,7 @@
       <DependentUpon>creationProfil.xaml</DependentUpon>
     </Compile>
     <Compile Include="Govt.cs" />
+    <Compile Include="ModuleProperty.cs" />
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Title.cs" />
     <Page Include="Assistant.xaml">
