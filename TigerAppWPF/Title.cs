@@ -9,7 +9,6 @@ namespace TigerAppWPF
     {
         private string isin;
         private int qtty;
-        private int nominale;
         private string country;
         private string name;
         private double value;
@@ -18,22 +17,22 @@ namespace TigerAppWPF
         private bool oecd = false;
         private bool eu= false;
         private bool strategic = false;
-        private bool volume_valide;
+        private bool isvalide = true;
         private DataConfig config;
+        private string message_err;
 
-        public Title(string _isin, int _qtty, int _nominale)
+        public Title(string _isin, int _qtty, string _message_err)
         {
             this.isin = _isin;
             this.qtty = _qtty;
-            this.nominale = _nominale;
-            VolumeValide();
+            this.MessageErreur = _message_err;
+            this.isvalide = false;
         }
 
-        public Title(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value)
+        public Title(string _isin, int _qtty, string country, string currency, string name, double value)
         {
             this.isin = _isin;
             this.qtty = _qtty;
-            this.nominale = _nominale;
             this.country = country;
             this.currency = currency;
             this.name = name;
@@ -56,10 +55,13 @@ namespace TigerAppWPF
             get { return this.qtty; }
             set { this.qtty = value; }
         }
-        public long Volume()
-        { return nominale*qtty; }
-        public bool GetVolumeValide
-        { get { return volume_valide; } }
+        virtual public long Volume()
+        { return qtty; }
+        public bool IsValide
+        {
+            get { return isvalide; }
+            set { isvalide = value; }
+        }
         public double Value
         { get { return this.value; } }    
         public bool Oecd
@@ -76,26 +78,39 @@ namespace TigerAppWPF
         { get { return this.currency; } }
         public double Total
         { get { return this.total; } }
+        public string MessageErreur
+        { get { return message_err;}
+          set { if (message_err == null)
+                    message_err = value;
+                else
+                    message_err+= " et "+value; 
+          }
+        }
+
         #endregion
 
-        private void VolumeValide()
+        protected void VolumeValide()
         {
             if (Volume() > 5000000)
-                volume_valide = false;
-            else
-                volume_valide = true;
+            {
+                isvalide = false;
+                this.MessageErreur = "Volume probablement trop grand";
+            }
         }
         override public string ToString()
         {
-            return isin + " : Pays : " + country + " Nom : " + name + " = "+qtty+ "(" + value+" "+ currency+")";
+            string s = isin + " : Pays : " + country + " Nom : " + name + " = "+qtty+ "(" + value+" "+ currency+")";
+            if(message_err != null)
+                s+="Erreur : "+message_err;
+            return s;
         }
 
         virtual public string ToCSV()
         {
-            if (name != null)
+            if (isvalide)
                 return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value;
             else
-                return isin + ";" + qtty;
+                return isin + ";" + qtty+";"+message_err;
         }
     }
 }

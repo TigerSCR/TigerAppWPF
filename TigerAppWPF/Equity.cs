@@ -7,12 +7,12 @@ namespace TigerAppWPF
 {
     public class Equity : Title
     {
-        public Equity(string _isin, int _qtty)
-            : base(_isin, _qtty, 1) //nominale = 1
+        public Equity(string _isin, int _qtty, string _message_err)
+            : base(_isin, _qtty, _message_err)
         {}
 
         public Equity(string _isin, int _qtty, string country, string currency, string name, double value)
-            : base(_isin, _qtty,1, country, currency, name, value) //nominale = 1
+            : base(_isin, _qtty, country, currency, name, value)
         {}
 
         override public string ToCSV()

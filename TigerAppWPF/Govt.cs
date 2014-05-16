@@ -5,14 +5,14 @@ using System.Text;
 
 namespace TigerAppWPF
 {
-        public class Govt : Title
+        public class Govt : TitleNominale
         {
-            public Govt(string _isin, int _qtty, int _nominale)
-                : base(_isin, _qtty, _nominale)
+            public Govt(string _isin, int _qtty, int _nominale, string _message_err)
+                : base(_isin, _qtty,_nominale, _message_err)
             { }
 
             public Govt(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value)
-                : base(_isin, _qtty,  _nominale, country, currency, name, value)
+                : base(_isin, _qtty, country, currency, name, value, _nominale)
             { }
 
             override public string ToCSV()

@@ -9,27 +9,30 @@ namespace TigerAppWPF
     {
         private string dateEmit;
         private string dateBack;
-        private string name;
-        public Corp(string _isin, int _qtty, int _nominale, string dateEmit, string dateBack, string name)
-            : base(_isin,_qtty, _nominale)
+
+        public Corp(string _isin, int _qtty, int _nominale, string _message_err)
+            : base(_isin, _qtty,_message_err)
+        {
+
+        }
+
+        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value, string dateEmit, string dateBack)
+            : base(_isin, _qtty, country, currency, name, value)
         {
             this.dateEmit = dateEmit;
             this.dateBack = dateBack;
-            this.name = name;
         }
-
-        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value)
-            : base(_isin, _qtty, _nominale, country, currency, name, value)
-        {}
 
         public override string ToString()
         {
-            return name + " DateEmit : " + dateEmit + " DateBack: " + dateBack;
+            return base.ToString() + " DateEmit : " + dateEmit + " DateBack: " + dateBack;
         }
 
         override public string ToCSV()
         {
-            return "Corp;" + base.ToCSV() + ";" + dateEmit + ";" + dateBack + ";" + name;
+            if (this.IsValide)
+                return "Corp;" + base.ToCSV() + ";" + dateEmit + ";" + dateBack;
+            else return "Corp;" + base.ToCSV();
         }
     }
 }

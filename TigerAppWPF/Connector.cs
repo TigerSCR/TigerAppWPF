@@ -88,30 +88,31 @@ namespace TigerAppWPF
         /// <returns>la liste de Titre avec les informations remplit</returns>
         public List<Title> getInfo(List<Tuple<string, int, int>> _d_title)
         {
-            if (l_title.Count != 0)
-                return l_title;
+                if (l_title.Count != 0)
+                    return l_title;
+                
+                d_title = new Dictionary<string, Tuple<int, int, string>>();
+                foreach (var tuple in _d_title)
+                {
+                    d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
+                }
+                isGetType = true;
 
-            d_title = new Dictionary<string, Tuple<int, int, string>>();
-            foreach (var tuple in _d_title)
-            {
-                d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
-            }
-            isGetType = true;
-            
 
-            foreach (var title in _d_title)
-            {
-                request.Append("securities", "/isin/" + title.Item1);
-                request.Append("fields", "MARKET_SECTOR_DES");
-            }
+                foreach (var title in _d_title)
+                {
+                    request.Append("securities", "/isin/" + title.Item1);
+                    request.Append("fields", "MARKET_SECTOR_DES");
+                }
 
-            ResponseLoop(); // Recupère les secteurs de marché
+                ResponseLoop(); // Recupère les secteurs de marché
 
-            isGetType = false;
-            ResponseLoop(); // Recupère les actions propres au secteur
+                isGetType = false;
+                ResponseLoop(); // Recupère les actions propres au secteur
+
+                
 
             d_title.Clear();
-            this.WriteCSV();
             return l_title;
         }
 
@@ -197,7 +198,7 @@ namespace TigerAppWPF
                     if (securityData.HasElement("securityError"))
                     {
                         Element securityError = securityData.GetElement("securityError");
-                        throw new Exception("securityError " + securityError.ToString());
+                        throw new Exception("securityError : "+security+" invalide");
                     }
 
                     else
@@ -235,9 +236,9 @@ namespace TigerAppWPF
 
                                 case "Govt":
                                     if (isGetType)
-                                        RequestEquity(security);
+                                        RequestGovt(security);
                                     else
-                                        ParseEquity(fieldData, security);
+                                        ParseGovt(fieldData, security);
                                     break;
 
                                 case "Index":
@@ -291,6 +292,9 @@ namespace TigerAppWPF
             d_title[title] = new Tuple<int,int,string>(d_title[title].Item1,d_title[title].Item2, "Corp");
             request.Append("securities", "/isin/"+title);
             //request.Append("fields", "MARKET_SECTOR_DES");
+            request.Append("fields", "PX_LAST");
+            request.Append("fields", "DDIS_CURRENCY");
+            request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "WORKOUT_DT_BID");
             request.Append("fields", "ISSUE_DT");
             request.Append("fields", "NAME");
@@ -298,12 +302,26 @@ namespace TigerAppWPF
 
         private static void ParseCorp(Element fieldData, string security)
         {
-            string dateBack = fieldData.GetElementAsString("WORKOUT_DT_BID");
-            string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
-            string name = fieldData.GetElementAsString("NAME");
+            Corp corp;
+            try
+            {
+                string dateBack = fieldData.GetElementAsString("WORKOUT_DT_BID");
+                string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
+                string name = fieldData.GetElementAsString("NAME");
+                string country = fieldData.GetElementAsString("COUNTRY_ISO");
+                double px_last = fieldData.GetElementAsFloat64("PX_LAST");
+                string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
 
-            curve.GetValue(dateEmit);
-            Corp corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, dateEmit, dateBack, name);
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, dateEmit, dateBack);
+            }
+
+            catch (NotFoundException e)
+            {
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2,e.Description() );
+            }
+
+            //curve.GetValue(dateEmit);
+            
             l_title.Add(corp);
         }
 
@@ -313,7 +331,7 @@ namespace TigerAppWPF
             request.Append("securities", "/isin/" + title);
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "PX_LAST");
-            request.Append("fields", "CRNCY");
+            request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "NAME");
         }
@@ -323,11 +341,34 @@ namespace TigerAppWPF
         {
             string country = fieldData.GetElementAsString("COUNTRY_ISO");
             double px_last = fieldData.GetElementAsFloat64("PX_LAST");
-            string currency = fieldData.GetElementAsString("CRNCY");
+            string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
             string name = fieldData.GetElementAsString("NAME");
 
             Equity equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last);
             l_title.Add(equit);
+        }
+
+        static private void RequestGovt(string title)
+        {
+            d_title[title] = new Tuple<int, int, string>(d_title[title].Item1, 0, "Govt");
+            request.Append("securities", "/isin/" + title);
+            //request.Append("fields", "MARKET_SECTOR_DES");
+            request.Append("fields", "PX_LAST");
+            request.Append("fields", "DDIS_CURRENCY");
+            request.Append("fields", "COUNTRY_ISO");
+            request.Append("fields", "NAME");
+        }
+
+
+        private static void ParseGovt(Element fieldData, string security)
+        {
+            string country = fieldData.GetElementAsString("COUNTRY_ISO");
+            double px_last = fieldData.GetElementAsFloat64("PX_LAST");
+            string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
+            string name = fieldData.GetElementAsString("NAME");
+
+            Govt govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last);
+            l_title.Add(govt);
         }
 
         #endregion 
@@ -362,10 +403,14 @@ namespace TigerAppWPF
                     switch (values[0])
                     {
                         case "Equity":
-                            l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6])));
+                            if (values.Length == 6)
+                                l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6])));
+                            else l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3]));
                             break;
                         case "Corp":
-                            l_title.Add(new Corp(values[1], int.Parse(values[2]),100, values[3], values[4], values[5]));
+                            if (values.Length == 9)
+                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),values[8],values[9]));
+                            else l_title.Add(new Corp(values[1], int.Parse(values[2]), int.Parse(values[3]),values[4]));
                             break;
                     }
                 }
