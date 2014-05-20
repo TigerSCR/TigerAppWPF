@@ -99,5 +99,11 @@ namespace TigerAppWPF
         {
             this.Close();
         }
+
+        private void Rapport_Click(object sender, RoutedEventArgs e)
+        {
+            RapportView rv = new RapportView();
+            rv.Show();
+        }
     }
 }

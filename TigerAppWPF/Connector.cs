@@ -411,8 +411,8 @@ namespace TigerAppWPF
                             else l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3]));
                             break;
                         case "Corp":
-                            if (values.Length == 9)
-                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),values[8],values[9]));
+                            if (values.Length == 10)
+                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),values[8],values[9],bool.Parse(values[10])));
                             else l_title.Add(new Corp(values[1], int.Parse(values[2]), int.Parse(values[3]),values[4]));
                             break;
                     }

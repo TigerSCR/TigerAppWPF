@@ -40,8 +40,11 @@
     <Reference Include="Bloomberglp.Blpapi">
       <HintPath>.\Bloomberglp.Blpapi.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -67,8 +70,15 @@
     </Compile>
     <Compile Include="Govt.cs" />
     <Compile Include="ModuleProperty.cs" />
+    <Compile Include="RapportView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RapportView.Designer.cs">
+      <DependentUpon>RapportView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Title.cs" />
+    <Compile Include="TitleNominale.cs" />
     <Page Include="Assistant.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +128,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="RapportView.resx">
+      <DependentUpon>RapportView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report.rdlc" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

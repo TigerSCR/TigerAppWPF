@@ -20,6 +20,7 @@
                     <MenuItem Header="SCR Equity" Click="Outils_Calculer_Equity_Click"/>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Rapport" Foreground="#FFD17200" FontFamily="Century Gothic" FontWeight="Bold" Click="Rapport_Click" />
         </Menu>
         <TabControl TabStripPlacement="Left" Grid.Row="1" Background="#FF505050">
             <TabItem Header="Portfolio" Background="#FF505050" BorderBrush="{x:Null}" Foreground="#FFD17200" FontFamily="Century Gothic">
