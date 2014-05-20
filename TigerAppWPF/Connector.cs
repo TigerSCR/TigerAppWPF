@@ -94,7 +94,8 @@ namespace TigerAppWPF
                 d_title = new Dictionary<string, Tuple<int, int, string>>();
                 foreach (var tuple in _d_title)
                 {
-                    d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
+                    if(!tuple.Item1.Contains("Immo"))
+                        d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
                 }
                 isGetType = true;
 
@@ -298,6 +299,7 @@ namespace TigerAppWPF
             request.Append("fields", "WORKOUT_DT_BID");
             request.Append("fields", "ISSUE_DT");
             request.Append("fields", "NAME");
+            request.Append("fields", "IS_COVERED");
         }
 
         private static void ParseCorp(Element fieldData, string security)
@@ -311,8 +313,9 @@ namespace TigerAppWPF
                 string country = fieldData.GetElementAsString("COUNTRY_ISO");
                 double px_last = fieldData.GetElementAsFloat64("PX_LAST");
                 string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
+                bool is_covered = fieldData.GetElementAsBool("IS_COVERED");
 
-                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, dateEmit, dateBack);
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, dateEmit, dateBack, is_covered);
             }
 
             catch (NotFoundException e)
