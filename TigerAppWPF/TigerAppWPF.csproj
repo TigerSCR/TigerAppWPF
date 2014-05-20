@@ -41,6 +41,7 @@
       <HintPath>.\Bloomberglp.Blpapi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -69,6 +70,7 @@
       <DependentUpon>creationProfil.xaml</DependentUpon>
     </Compile>
     <Compile Include="Govt.cs" />
+    <Compile Include="ModuleChange.cs" />
     <Compile Include="ModuleProperty.cs" />
     <Compile Include="RapportView.cs">
       <SubType>Form</SubType>
@@ -76,7 +78,10 @@
     <Compile Include="RapportView.Designer.cs">
       <DependentUpon>RapportView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModuleSpread.cs" />
     <Compile Include="Repartiteur.cs" />
+    <Compile Include="Society.cs" />
+    <Compile Include="TestProperty.cs" />
     <Compile Include="Title.cs" />
     <Compile Include="TitleNominale.cs" />
     <Page Include="Assistant.xaml">
