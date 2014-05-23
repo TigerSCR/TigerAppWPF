@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Govt.cs" />
     <Compile Include="ModuleChange.cs" />
+    <Compile Include="ModuleConcentration.cs" />
     <Compile Include="ModuleProperty.cs" />
     <Compile Include="RapportView.cs">
       <SubType>Form</SubType>
