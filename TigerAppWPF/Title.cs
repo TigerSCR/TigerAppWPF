@@ -20,7 +20,15 @@ namespace TigerAppWPF
         private bool isvalide = true;
         private DataConfig config;
         private string message_err;
+        private int id_Mcorp;
+        private string name_Mcorp;
 
+        /// <summary>
+        /// Construceteur en cas d'erreur
+        /// </summary>
+        /// <param name="_isin"></param>
+        /// <param name="_qtty"></param>
+        /// <param name="_message_err"></param>
         public Title(string _isin, int _qtty, string _message_err)
         {
             this.isin = _isin;
@@ -29,7 +37,7 @@ namespace TigerAppWPF
             this.isvalide = false;
         }
 
-        public Title(string _isin, int _qtty, string country, string currency, string name, double value)
+        public Title(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp)
         {
             this.isin = _isin;
             this.qtty = _qtty;
@@ -37,6 +45,8 @@ namespace TigerAppWPF
             this.currency = currency;
             this.name = name;
             this.value = value;
+            this.id_Mcorp = _id_Mcorp;
+            this.name_Mcorp = _name_Mcorp;
 
             config = DataConfig.getDataConfig();
             if (config.ListOCDE.Contains(this.country))
@@ -108,7 +118,7 @@ namespace TigerAppWPF
         virtual public string ToCSV()
         {
             if (isvalide)
-                return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value;
+                return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value+";"+id_Mcorp+";";
             else
                 return isin + ";" + qtty+";"+message_err;
         }

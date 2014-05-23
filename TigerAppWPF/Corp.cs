@@ -5,35 +5,31 @@ using System.Text;
 
 namespace TigerAppWPF
 {
-    public class Corp : Title
+    public class Corp : TitleNominale
     {
-        private string dateEmit;
-        private string dateBack;
         private bool is_covered;
 
         public Corp(string _isin, int _qtty, int _nominale, string _message_err)
-            : base(_isin, _qtty,_message_err)
+            : base(_isin, _qtty, _nominale, _message_err)
         {
 
         }
 
-        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value, string dateEmit, string dateBack, bool is_covered)
-            : base(_isin, _qtty, country, currency, name, value)
+        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, string dateEmit, string maturity, double duration, int note, bool is_covered )
+            : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp, _nominale, dateEmit, maturity, duration, note)
         {
-            this.dateEmit = dateEmit;
-            this.dateBack = dateBack;
             this.is_covered = is_covered;
         }
 
         public override string ToString()
         {
-            return base.ToString() + " DateEmit : " + dateEmit + " DateBack: " + dateBack+" COVB"+is_covered;
+            return base.ToString()+" COVB "+is_covered;
         }
 
         override public string ToCSV()
         {
             if (this.IsValide)
-                return "Corp;" + base.ToCSV() + ";" + dateEmit + ";" + dateBack+";"+is_covered;
+                return "Corp;" + base.ToCSV() +is_covered;
             else return "Corp;" + base.ToCSV();
         }
     }

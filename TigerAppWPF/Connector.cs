@@ -296,10 +296,18 @@ namespace TigerAppWPF
             request.Append("fields", "PX_LAST");
             request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
-            request.Append("fields", "WORKOUT_DT_BID");
+            request.Append("fields", "MATURITY");
             request.Append("fields", "ISSUE_DT");
             request.Append("fields", "NAME");
             request.Append("fields", "IS_COVERED");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
+            request.Append("fields", "YAS_MOD_DUR");
+
+            request.Append("fields", "RTG_MOODY");
+            request.Append("fields", "RTG_FITCH");
+            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
+
         }
 
         private static void ParseCorp(Element fieldData, string security)
@@ -307,15 +315,23 @@ namespace TigerAppWPF
             Corp corp;
             try
             {
-                string dateBack = fieldData.GetElementAsString("WORKOUT_DT_BID");
+                string maturity = fieldData.GetElementAsString("MATURITY");
                 string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
                 string name = fieldData.GetElementAsString("NAME");
                 string country = fieldData.GetElementAsString("COUNTRY_ISO");
                 double px_last = fieldData.GetElementAsFloat64("PX_LAST");
                 string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
                 bool is_covered = fieldData.GetElementAsBool("IS_COVERED");
+                int id_Mcorp = fieldData.GetElementAsInt32("ID_BB_ULTIMATE_PARENT_CO");
+                string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
+                double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
 
-                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, dateEmit, dateBack, is_covered);
+                // rating
+                string rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+                string rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
+                string rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1, is_covered);
             }
 
             catch (NotFoundException e)
@@ -337,17 +353,29 @@ namespace TigerAppWPF
             request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "NAME");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
         }
 
 
         private static void ParseEquity(Element fieldData, string security)
         {
-            string country = fieldData.GetElementAsString("COUNTRY_ISO");
-            double px_last = fieldData.GetElementAsFloat64("PX_LAST");
-            string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
-            string name = fieldData.GetElementAsString("NAME");
+            Equity equit;
+            try
+            {
+                string country = fieldData.GetElementAsString("COUNTRY_ISO");
+                double px_last = fieldData.GetElementAsFloat64("PX_LAST");
+                string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
+                string name = fieldData.GetElementAsString("NAME");
+                int id_Mcorp = fieldData.GetElementAsInt32("ID_BB_ULTIMATE_PARENT_CO");
+                string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
 
-            Equity equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last);
+                equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp);
+            }
+            catch (NotFoundException e)
+            {
+                equit = new Equity(security, d_title[security].Item1, e.Description());
+            }
             l_title.Add(equit);
         }
 
@@ -357,20 +385,47 @@ namespace TigerAppWPF
             request.Append("securities", "/isin/" + title);
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "PX_LAST");
+            request.Append("fields", "MATURITY");
+            request.Append("fields", "ISSUE_DT");
             request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "NAME");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
+            request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
+            request.Append("fields", "YAS_MOD_DUR");
+
+            request.Append("fields", "RTG_MOODY");
+            request.Append("fields", "RTG_FITCH");
+            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
         }
 
 
         private static void ParseGovt(Element fieldData, string security)
         {
-            string country = fieldData.GetElementAsString("COUNTRY_ISO");
-            double px_last = fieldData.GetElementAsFloat64("PX_LAST");
-            string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
-            string name = fieldData.GetElementAsString("NAME");
+            Govt govt;
+            try
+            {
+                string country = fieldData.GetElementAsString("COUNTRY_ISO");
+                double px_last = fieldData.GetElementAsFloat64("PX_LAST");
+                string currency = fieldData.GetElementAsString("DDIS_CURRENCY");
+                string name = fieldData.GetElementAsString("NAME");
+                int id_Mcorp = fieldData.GetElementAsInt32("ID_BB_ULTIMATE_PARENT_CO");
+                string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
+                double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
+                string maturity = fieldData.GetElementAsString("MATURITY");
+                string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
 
-            Govt govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last);
+                // rating
+                string rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+                string rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
+                string rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+
+                govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1);
+            }
+            catch (NotFoundException e)
+            {
+                govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, e.Description());
+            }
             l_title.Add(govt);
         }
 
@@ -406,13 +461,13 @@ namespace TigerAppWPF
                     switch (values[0])
                     {
                         case "Equity":
-                            if (values.Length == 6)
-                                l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6])));
+                            if (values.Length == 8)
+                                l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6]), int.Parse(values[7]), values[8]));
                             else l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3]));
                             break;
                         case "Corp":
-                            if (values.Length == 10)
-                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),values[8],values[9],bool.Parse(values[10])));
+                            if (values.Length == 14)
+                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),int.Parse(values[8]),values[9], values[10], values[11], double.Parse(values[12]), int.Parse(values[13]),bool.Parse(values[14])));
                             else l_title.Add(new Corp(values[1], int.Parse(values[2]), int.Parse(values[3]),values[4]));
                             break;
                     }
