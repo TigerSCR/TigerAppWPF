@@ -54,9 +54,61 @@ namespace TigerAppWPF
             : base(source)
         { }
 
+        //montant*(a+b*(z) avec z=duration-c
         protected override void calculate(List<Title> source)
         {
-            
+            //formule temp en attendant les accesseurs
+         /*   foreach (Title t in source)
+            {
+                int x, y, z;
+                double a, b,c ;
+                if (t is Corp)
+                {
+                    x = ((Corp)t).Maturity )/ 5;
+                    y=((Corp)t).Rate;
+                    if(y==null)
+                        y=7;
+                    c=(((Corp)t).Maturity)/5;
+                    c=c*5;
+
+                    a=corp_A[x,y];
+                    b=corp_B[x,y];
+                    z=((Corp)t).Duration-c;
+
+                    results.Add(t,t.Total*a*b*z);
+                }
+                else if (t is Govt && DataConfig.getDataConfig().ListUE.Contains(t.Country))
+                {
+                    x = ((Govt)t).Maturity )/ 5;
+                    y=((Govt)t).Rate;
+                    if(y==null)
+                        y=7;
+                    c=(((Govt)t).Maturity)/5;
+                    c=c*5;
+
+                    a=covered_A[x,y];
+                    b=covered_B[x,y];
+                    z=((Govt)t).Duration-c;
+
+                    results.Add(t,t.Total*a*b*z);
+                }
+                else
+                {
+                    x = ((Govt)t).Maturity )/ 5;
+                    y=((Govt)t).Rate;
+                    if(y==null)
+                        y=7;
+                    c=(((Govt)t).Maturity)/5;
+                    c=c*5;
+
+                    a=nonEEA_A[x,y];
+                    b=nonEEA_B[x,y];
+                    z=((Govt)t).Duration-c;
+
+                    results.Add(t,t.Total*a*b*z);
+                
+                }
+            }*/
         }
     }
 }
