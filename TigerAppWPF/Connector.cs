@@ -92,28 +92,35 @@ namespace TigerAppWPF
                     return l_title;
                 
                 d_title = new Dictionary<string, Tuple<int, int, string>>();
-                foreach (var tuple in _d_title)
+
+                for (int i = 0; i < _d_title.Count; i += 30)
                 {
-                    if(!tuple.Item1.Contains("Immo"))
-                        d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
+                    for (int j = i; j < i + 30; j++) //gere le nombre limité de champs que l'on peut envoyer dans une seule requete
+                    {
+                        if (j >= _d_title.Count)
+                            break;
+                        var tuple = _d_title.ElementAt(j);
+                        if (!tuple.Item1.Contains("Immo"))
+                            d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
+                        else
+                            d_title.Add(tuple.Item1, new Tuple<int, int, string>(tuple.Item2, tuple.Item3, ""));
+                    }
+
+                    foreach (var title in d_title)
+                    {
+                        request.Append("securities", "/isin/" + title.Key);
+                        request.Append("fields", "MARKET_SECTOR_DES");
+                    }
+
+                    isGetType = true;
+                    ResponseLoop(); // Recupère les secteurs de marché
+
+                    isGetType = false;
+                    ResponseLoop(); // Recupère les actions propres au secteur 
+
+                    d_title.Clear();
                 }
-                isGetType = true;
 
-
-                foreach (var title in _d_title)
-                {
-                    request.Append("securities", "/isin/" + title.Item1);
-                    request.Append("fields", "MARKET_SECTOR_DES");
-                }
-
-                ResponseLoop(); // Recupère les secteurs de marché
-
-                isGetType = false;
-                ResponseLoop(); // Recupère les actions propres au secteur
-
-                
-
-            d_title.Clear();
             return l_title;
         }
 
@@ -327,9 +334,13 @@ namespace TigerAppWPF
                 double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
 
                 // rating
-                string rt_moody = fieldData.GetElementAsString("RTG_MOODY");
-                string rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
-                string rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+                string rt_moody,rt_fitch,rt_sp;
+                if(fieldData.HasElement("RTG_MOODY"))
+                    rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+                if(fieldData.HasElement("RTG_FITCH"))
+                    rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
+                if(fieldData.HasElement("RTG_FITCH"))
+                    rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
 
                 corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1, is_covered);
             }
@@ -416,9 +427,13 @@ namespace TigerAppWPF
                 string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
 
                 // rating
-                string rt_moody = fieldData.GetElementAsString("RTG_MOODY");
-                string rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
-                string rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+                string rt_moody, rt_fitch, rt_sp;
+                if (fieldData.HasElement("RTG_MOODY"))
+                    rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+                if (fieldData.HasElement("RTG_FITCH"))
+                    rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
+                if (fieldData.HasElement("RTG_FITCH"))
+                    rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
 
                 govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1);
             }
