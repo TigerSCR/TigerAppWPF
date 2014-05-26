@@ -19,13 +19,19 @@ namespace TigerAppWPF
 
         static public int GetQuality(Element fieldData)
         {
-            string rt_moody="", rt_fitch="", rt_sp="";
-            if (fieldData.HasElement("RTG_MOODY"))
-                rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+            string rt_fitch = "", rt_sp = "", rt_moody = "";
             if (fieldData.HasElement("RTG_FITCH"))
                 rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
             if (fieldData.HasElement("RTG_SP_LT_LC_ISSUER_CREDIT"))
                 rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+            if (fieldData.HasElement("RTG_MOODY"))
+                rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+
+            return CalcRating(rt_fitch, rt_sp, rt_moody);
+        }
+
+        static public int CalcRating(string rt_fitch, string rt_sp, string rt_moody)
+        {
 
             List<int> liste_note = new List<int>();
             liste_note.Add(Fitch_SP(rt_fitch));
