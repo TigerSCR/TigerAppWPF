@@ -94,11 +94,11 @@ namespace TigerAppWPF
                     return l_title;
                 
                 d_title = new Dictionary<string, Tuple<int, int, string>>();
-
-                for (int i = 0; i < _d_title.Count; i += 30)
+                int nb_champs = 30;
+                int nb_request = (_d_title.Count / nb_champs)+1;
+                for (int i = 0; i < _d_title.Count; i += nb_champs)
                 {
-                    worker.ReportProgress(50);
-                    for (int j = i; j < i + 30; j++) //gere le nombre limité de champs que l'on peut envoyer dans une seule requete
+                    for (int j = i; j < i + nb_champs; j++) //gere le nombre limité de champs que l'on peut envoyer dans une seule requete
                     {
                         if (j >= _d_title.Count)
                             break;
@@ -117,9 +117,12 @@ namespace TigerAppWPF
 
                     isGetType = true;
                     ResponseLoop(); // Recupère les secteurs de marché
+                    int progression = (((i+nb_champs)%nb_champs)/nb_request)*100;
+                    worker.ReportProgress(progression);
 
                     isGetType = false;
-                    ResponseLoop(); // Recupère les actions propres au secteur 
+                    ResponseLoop(); // Recupère les actions propres au secteur
+                    worker.ReportProgress(progression+(nb_champs/2));
 
                     d_title.Clear();
                 }

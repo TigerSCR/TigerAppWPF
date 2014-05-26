@@ -26,7 +26,6 @@ namespace TigerAppWPF
     {
         private bool initialized = false;//definit si le portofolio existe pour éviter l'overrun du binding
         public BackgroundWorker worker = new BackgroundWorker();
-        private bool initialized = false; //definit si le portofolio existe pour éviter l'overrun du binding
         public MainWindow()
         {
             InitializeComponent();
