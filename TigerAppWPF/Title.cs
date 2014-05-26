@@ -16,7 +16,6 @@ namespace TigerAppWPF
         private string currency;
         private bool oecd = false;
         private bool eu= false;
-        private bool strategic = false;
         private bool isvalide = true;
         private DataConfig config;
         private string message_err;
@@ -87,8 +86,6 @@ namespace TigerAppWPF
         { get { return this.oecd; } }
         public bool Eu
         { get { return this.eu; } }
-        public bool Strategic
-        { get { return this.strategic; } }
         public string Name
         { get { return this.name; } }
         public string Country

@@ -7,6 +7,7 @@ namespace TigerAppWPF
 {
     public class Equity : Title
     {
+        private bool strategic = false;
         public Equity(string _isin, int _qtty, string _message_err)
             : base(_isin, _qtty, _message_err)
         {}
@@ -19,6 +20,13 @@ namespace TigerAppWPF
         {
             return "Equity;" +base.ToCSV();
         }
+
+        public bool Strategic
+        {
+            get { return strategic; }
+            set { strategic = value; }
+        }
+
 
         /*public Equity(Title _t)
             : base(_t)
