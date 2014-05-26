@@ -23,6 +23,7 @@ namespace TigerAppWPF
         static private bool isGetType;
         static private bool isGetCurve;
         static private CourbeSwap curve;
+        static private Rating rating;
 
         private Connector()
         {
@@ -334,13 +335,7 @@ namespace TigerAppWPF
                 double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
 
                 // rating
-                string rt_moody,rt_fitch,rt_sp;
-                if(fieldData.HasElement("RTG_MOODY"))
-                    rt_moody = fieldData.GetElementAsString("RTG_MOODY");
-                if(fieldData.HasElement("RTG_FITCH"))
-                    rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
-                if(fieldData.HasElement("RTG_FITCH"))
-                    rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+                TabRating(fieldData);
 
                 corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1, is_covered);
             }
@@ -366,6 +361,10 @@ namespace TigerAppWPF
             request.Append("fields", "NAME");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
+
+            request.Append("fields", "RTG_MOODY");
+            request.Append("fields", "RTG_FITCH");
+            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
         }
 
 
@@ -381,7 +380,7 @@ namespace TigerAppWPF
                 int id_Mcorp = fieldData.GetElementAsInt32("ID_BB_ULTIMATE_PARENT_CO");
                 string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
 
-                equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp);
+                equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp,-1);
             }
             catch (NotFoundException e)
             {
@@ -426,14 +425,7 @@ namespace TigerAppWPF
                 string maturity = fieldData.GetElementAsString("MATURITY");
                 string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
 
-                // rating
-                string rt_moody, rt_fitch, rt_sp;
-                if (fieldData.HasElement("RTG_MOODY"))
-                    rt_moody = fieldData.GetElementAsString("RTG_MOODY");
-                if (fieldData.HasElement("RTG_FITCH"))
-                    rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
-                if (fieldData.HasElement("RTG_FITCH"))
-                    rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+                TabRating(fieldData);
 
                 govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1);
             }
@@ -442,6 +434,24 @@ namespace TigerAppWPF
                 govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, e.Description());
             }
             l_title.Add(govt);
+        }
+
+        private static string[] TabRating(Element fieldData)
+        {
+            string rt_moody = "", rt_fitch = "", rt_sp = "";
+            if (fieldData.HasElement("RTG_MOODY"))
+                rt_moody = fieldData.GetElementAsString("RTG_MOODY");
+            if (fieldData.HasElement("RTG_FITCH"))
+                rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
+            if (fieldData.HasElement("RTG_SP_LT_LC_ISSUER_CREDIT"))
+                rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
+
+            string[] tabRate = new string[3];
+            tabRate[0] = rt_moody;
+            tabRate[1] = rt_fitch;
+            tabRate[2] = rt_sp;
+
+            return tabRate;
         }
 
         #endregion 
@@ -476,8 +486,8 @@ namespace TigerAppWPF
                     switch (values[0])
                     {
                         case "Equity":
-                            if (values.Length == 8)
-                                l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6]), int.Parse(values[7]), values[8]));
+                            if (values.Length == 9)
+                                l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3], values[4], values[5], Convert.ToDouble(values[6]), int.Parse(values[7]), values[8], int.Parse(values[9])));
                             else l_title.Add(new Equity(values[1], int.Parse(values[2]), values[3]));
                             break;
                         case "Corp":
@@ -492,6 +502,8 @@ namespace TigerAppWPF
         }
 
         #endregion
+
+        
 
 
         private static void handleOtherEvent(Event eventObj)
