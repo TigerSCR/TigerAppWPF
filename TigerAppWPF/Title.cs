@@ -22,6 +22,7 @@ namespace TigerAppWPF
         private string message_err;
         private int id_Mcorp;
         private string name_Mcorp;
+        private int rating;
 
         /// <summary>
         /// Construceteur en cas d'erreur
@@ -37,7 +38,7 @@ namespace TigerAppWPF
             this.isvalide = false;
         }
 
-        public Title(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp)
+        public Title(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, int rating)
         {
             this.isin = _isin;
             this.qtty = _qtty;
@@ -47,6 +48,7 @@ namespace TigerAppWPF
             this.value = value;
             this.id_Mcorp = _id_Mcorp;
             this.name_Mcorp = _name_Mcorp;
+            this.rating = rating;
 
             config = DataConfig.getDataConfig();
             if (config.ListOCDE.Contains(this.country))
@@ -73,6 +75,8 @@ namespace TigerAppWPF
             set { isvalide = value; }
         }
 
+        public int GetRating
+        { get { return rating; } }
         public string GetNameM_Corp
         { get { return name_Mcorp; } }
         public int GetID_Corp
@@ -123,7 +127,7 @@ namespace TigerAppWPF
         virtual public string ToCSV()
         {
             if (isvalide)
-                return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value+";"+id_Mcorp+";";
+                return isin + ";" + qtty + ";" + country + ";" + currency + ";" + name + ";" + value + ";" + id_Mcorp + ";" + rating + ";";
             else
                 return isin + ";" + qtty+";"+message_err;
         }

@@ -11,7 +11,6 @@ namespace TigerAppWPF
         private string dateEmit;
         private TimeSpan maturity;
         private double duration;
-        private int rating;
 
         public TitleNominale(string _isin, int _qtty, int _nominale, string _message_err)
             : base(_isin, _qtty, _message_err)
@@ -20,21 +19,17 @@ namespace TigerAppWPF
         }
 
         public TitleNominale(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, int _nominale, string dateEmit, string maturity, double duration, int rating)
-            : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp)
+            : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp, rating)
         {
             this.nominale = _nominale;
             this.dateEmit = dateEmit;
             this.maturity = CalcMaturity(maturity);
             this.duration = duration;
-            this.rating = rating;
             base.VolumeValide();
         }
 
         public int GetNominale
         { get { return nominale; } }
-
-        public int GetRating
-        { get { return rating; } }
 
         public TimeSpan GetMaturity
         { get { return maturity; } }
@@ -53,7 +48,7 @@ namespace TigerAppWPF
 
         public override string ToCSV()
         {
-            return base.ToCSV() + nominale + ";" + dateEmit + ";" + maturity + ";"+duration+";"+rating+";";
+            return base.ToCSV() + nominale + ";" + dateEmit + ";" + maturity + ";"+duration+";";
         }
 
         public override string ToString()
