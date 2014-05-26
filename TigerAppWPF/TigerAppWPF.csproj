@@ -83,7 +83,12 @@
     <Compile Include="Rating.cs" />
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Society.cs" />
+    <Compile Include="TestChange.cs" />
+    <Compile Include="TestConcentration.cs" />
+    <Compile Include="TestEquity.cs" />
     <Compile Include="TestProperty.cs" />
+    <Compile Include="TestRepartiteur.cs" />
+    <Compile Include="TestSpread.cs" />
     <Compile Include="Title.cs" />
     <Compile Include="TitleNominale.cs" />
     <Page Include="Assistant.xaml">
