@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using System.ComponentModel;
 
 using System.Windows;
 namespace TigerAppWPF
@@ -28,7 +30,7 @@ namespace TigerAppWPF
             return engine;
         }
 
-        public void setIsins(List<Tuple<string, int>> temp)
+        public void setIsins(List<Tuple<string, int>> temp, BackgroundWorker worker)
         {
             foreach(var i in temp)
             {
@@ -39,12 +41,12 @@ namespace TigerAppWPF
                 }
                 this.isins.Add(new Tuple<string,int,int>(i.Item1, i.Item2, 1));
             }
-            this.getTitle();
+            this.getTitle(worker);
         }
 
-        public void getTitle()
+        public void getTitle(BackgroundWorker worker)
         {
-            this.portfolio = Connector.getConnector().getInfo(this.isins);
+            this.portfolio = Connector.getConnector().getInfo(this.isins, worker);
             this.notifyObservers();
         }
 
@@ -88,7 +90,7 @@ namespace TigerAppWPF
         {
             foreach (IObserver observer in this.observerCollection)
             {
-                observer.notify();
+                //observer.notify();
             }
         }
 

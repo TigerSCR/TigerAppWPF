@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Bloomberglp.Blpapi;
 using System.IO;
+using System.ComponentModel;
 //using BEmu;
 
 namespace TigerAppWPF
@@ -86,8 +87,9 @@ namespace TigerAppWPF
         /// </summary>
         /// <param name="d_title">Isin avec leurs quantité</param>
         /// <returns>la liste de Titre avec les informations remplit</returns>
-        public List<Title> getInfo(List<Tuple<string, int, int>> _d_title)
+        public List<Title> getInfo(List<Tuple<string, int, int>> _d_title, BackgroundWorker worker)
         {
+            worker.ReportProgress(10);
                 if (l_title.Count != 0)
                     return l_title;
                 
@@ -95,6 +97,7 @@ namespace TigerAppWPF
 
                 for (int i = 0; i < _d_title.Count; i += 30)
                 {
+                    worker.ReportProgress(50);
                     for (int j = i; j < i + 30; j++) //gere le nombre limité de champs que l'on peut envoyer dans une seule requete
                     {
                         if (j >= _d_title.Count)
@@ -206,7 +209,7 @@ namespace TigerAppWPF
                     if (securityData.HasElement("securityError"))
                     {
                         Element securityError = securityData.GetElement("securityError");
-                        throw new Exception("securityError : "+security+" invalide");
+                        //throw new Exception("securityError : "+security+" invalide");
                     }
 
                     else
@@ -334,7 +337,7 @@ namespace TigerAppWPF
                 // rating
                 int rating = Rating.GetQuality(fieldData);
 
-                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating, is_covered);
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating, is_covered);
             }
 
             catch (NotFoundException e)

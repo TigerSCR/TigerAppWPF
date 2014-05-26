@@ -34,7 +34,7 @@ namespace TigerAppWPF
             //calcul pour chaque titre
             foreach(Title t in source)
             {
-                    if (!t.Strategic)
+                    /*if (!t.Strategic)
                     {
                         if (t.Oecd || t.Eu)
                         {
@@ -48,7 +48,7 @@ namespace TigerAppWPF
                         }
                     }
                     else
-                        results.Add(t,t.Total * strategic);
+                        results.Add(t,t.Total * strategic);*/
             }
 
             //calcul du scr du module avec la corrélation type 1 vs type 2 "corr"

@@ -32,7 +32,6 @@ namespace TigerAppWPF
 
         static public int CalcRating(string rt_fitch, string rt_sp, string rt_moody)
         {
-
             List<int> liste_note = new List<int>();
             liste_note.Add(Fitch_SP(rt_fitch));
             liste_note.Add(Fitch_SP(rt_sp));

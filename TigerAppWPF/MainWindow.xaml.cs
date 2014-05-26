@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
+using System.ComponentModel;
 
 using System.IO;
 
@@ -23,6 +25,8 @@ namespace TigerAppWPF
     public partial class MainWindow : Window, IObserver
     {
         private bool initialized = false;//definit si le portofolio existe pour éviter l'overrun du binding
+        public BackgroundWorker worker = new BackgroundWorker();
+        private bool initialized = false; //definit si le portofolio existe pour éviter l'overrun du binding
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +34,11 @@ namespace TigerAppWPF
             Society.getSociety("Nom", "FR", "EUR");
             /*Assistant ast=new Assistant();
             ast.ShowDialog();*/
-
+            
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.WorkerReportsProgress = true;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -69,10 +77,30 @@ namespace TigerAppWPF
                 {
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message + "\n" + ex.TargetSite + "\n" + ex.StackTrace + "\n" + ex.HelpLink);
                 }
-
-                Engine.getEngine().setIsins(resultat);
+                worker.RunWorkerAsync(resultat);
             }
+                
         }
+
+        #region BackgroundWorker ProgressBar
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<Tuple<string, int>> resultat = e.Argument as List<Tuple<string, int>>;
+            Engine.getEngine().setIsins(resultat, worker);
+        }
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBar.Value = 0;
+            notify();
+        }
+
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // Change the value of the ProgressBar to the BackgroundWorker progress.
+            progressBar.Value = e.ProgressPercentage;
+        }
+        #endregion
 
         private void Outils_Calculer_Equity_Click(object sender, RoutedEventArgs e)
         {
@@ -113,7 +141,7 @@ namespace TigerAppWPF
             rv.Show();
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        private void progressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
         }
