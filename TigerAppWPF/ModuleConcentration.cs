@@ -25,7 +25,8 @@ namespace TigerAppWPF
             listByCorporate = new Dictionary<int, List<Title>>();
             totalByCorporate = new Dictionary<int, Tuple<double, int, double, double>>();
             result = 0;
-            total=source.Count;
+            total = source.Count;
+            this.calculate(source);
         }
         
         protected override void calculate(List<Title> source)

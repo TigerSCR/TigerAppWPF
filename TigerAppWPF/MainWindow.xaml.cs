@@ -27,8 +27,9 @@ namespace TigerAppWPF
         {
             InitializeComponent();
             Engine.getEngine().registerObserver(this);
-            Assistant ast=new Assistant();
-            ast.ShowDialog();
+            Society.getSociety("Nom", "FR", "EUR");
+            /*Assistant ast=new Assistant();
+            ast.ShowDialog();*/
 
         }
 
@@ -75,7 +76,12 @@ namespace TigerAppWPF
 
         private void Outils_Calculer_Equity_Click(object sender, RoutedEventArgs e)
         {
-            Engine.getEngine().calculate();
+            Engine.getEngine().calculateEquity();
+        }
+
+        private void Outils_Calculer_All_Click(object sender, RoutedEventArgs e)
+        {
+            Engine.getEngine().calculateAll();
         }
 
         public void notify()
@@ -105,6 +111,11 @@ namespace TigerAppWPF
         {
             RapportView rv = new RapportView();
             rv.Show();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

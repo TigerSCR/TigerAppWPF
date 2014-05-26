@@ -48,9 +48,18 @@ namespace TigerAppWPF
             this.notifyObservers();
         }
 
-        public void calculate()
+        public void calculateEquity()
         {
             Repartiteur.getEngine().equity(this.portfolio);
+            this.notifyObservers();
+        }
+
+        public void calculateAll()
+        {
+            Repartiteur.getEngine().equity(this.portfolio);
+            Repartiteur.getEngine().change(this.portfolio);
+            Repartiteur.getEngine().spread(this.portfolio);
+            Repartiteur.getEngine().concentration(this.portfolio);
             this.notifyObservers();
         }
 

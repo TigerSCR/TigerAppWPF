@@ -11,7 +11,6 @@ namespace TigerAppWPF
         public Module(List<Title> source)
         {
             results=new Dictionary<Title,double>();
-            this.calculate(source);
         }
         protected virtual void calculate(List<Title> source)
         {}

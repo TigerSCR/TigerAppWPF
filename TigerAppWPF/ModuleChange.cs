@@ -11,7 +11,9 @@ namespace TigerAppWPF
         String[] exception = new String[] { "BKK", "BGN", "LVL", "LTL" };
         public ModuleChange(List<Title> source)
             : base(source)
-        { }
+        {
+            this.calculate(source);
+        }
 
         protected override void calculate(List<Title> source)
         {

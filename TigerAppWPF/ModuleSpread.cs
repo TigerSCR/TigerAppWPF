@@ -52,7 +52,9 @@ namespace TigerAppWPF
 
         public ModuleSpread(List<Title> source)
             : base(source)
-        { }
+        {
+            this.calculate(source);
+        }
 
         //montant*(a+b*(z)) avec z=duration-c
         protected override void calculate(List<Title> source)
@@ -64,7 +66,7 @@ namespace TigerAppWPF
                 double a, b,c,z;
                 TitleNominale t=t0 as TitleNominale;
 
-                x = ((int)t.GetMaturity.TotalDays%365 )/ 5;
+                x = ((int)t.GetMaturity.TotalDays/365 )/ 5;
                 c = x * 5;
                 y = t.GetRating;
                 z = t.GetDuration - c;

@@ -18,6 +18,7 @@
             <MenuItem Header="Outils" Foreground="#FFD17200" FontFamily="Century Gothic" FontWeight="Bold">
                 <MenuItem Header="Calculer">
                     <MenuItem Header="SCR Equity" Click="Outils_Calculer_Equity_Click"/>
+                    <MenuItem Header="SCR Global" Click="Outils_Calculer_All_Click"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Rapport" Foreground="#FFD17200" FontFamily="Century Gothic" FontWeight="Bold" Click="Rapport_Click" />

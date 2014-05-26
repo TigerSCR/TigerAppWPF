@@ -12,7 +12,9 @@ namespace TigerAppWPF
 
         public ModuleProperty(List<Title> source)
             : base(source)
-        { }
+        {
+            this.calculate(source);
+        }
 
         protected override void calculate(List<Title> source)
         {

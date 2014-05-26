@@ -26,6 +26,7 @@ namespace TigerAppWPF
             sommeT1 = 0;
             sommeT2 = 0;
             result = 0;
+            this.calculate(source);
         }
 
         protected override void calculate(List<Title> source)

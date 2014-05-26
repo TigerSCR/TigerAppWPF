@@ -29,15 +29,15 @@ namespace TigerAppWPF
         }
 
 #region Checkers
-        private static bool inEquityModule(Title t)
+        protected static bool inEquityModule(Title t)
         {
             return t is Equity;
         }
-        private static bool inSpreadModule(Title t)
+        protected static bool inSpreadModule(Title t)
         {
             return (t is Corp || t is Govt);
         }
-        private static bool inChangeModule(Title t)
+        protected static bool inChangeModule(Title t)
         {
             return t.Country != Society.getSociety().Country;
         }
@@ -84,7 +84,7 @@ namespace TigerAppWPF
 #region Get/Set
         public ModuleEquity ModEqu
         { get { return this.modEqu; } }
-        public ModuleChange ModCha
+        public ModuleChange ModChange
         { get { return this.modChange; } }
         public ModuleConcentration ModConc
         { get { return this.modConc; } }
