@@ -68,12 +68,12 @@ namespace TigerAppWPF
                 c = x * 5;
                 y = t.GetRating;
                 z = t.GetDuration - c;
+                /*inutile désormais on dit directement dans title que pas de rating = 7
+                 * if(y==null)
+                    y=7;*/
 
                 if (t is Corp)
                 {
-                    if(y==null)
-                        y=7;
-
                     a=corp_A[x,y];
                     b=corp_B[x,y];
 
@@ -81,8 +81,6 @@ namespace TigerAppWPF
                 }
                 else if (t is Govt && DataConfig.getDataConfig().ListUE.Contains(t.Country))
                 {
-                    if(y==null)
-                        y=7;
                     a=covered_A[x,y];
                     b=covered_B[x,y];
 
@@ -90,14 +88,10 @@ namespace TigerAppWPF
                 }
                 else
                 {
-                    if(y==null)
-                        y=7;
-
                     a=nonEEA_A[x,y];
                     b=nonEEA_B[x,y];
 
                     results.Add(t,t.Total*a*b*z);
-                
                 }
             }
         }
