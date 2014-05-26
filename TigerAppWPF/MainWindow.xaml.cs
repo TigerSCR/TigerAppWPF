@@ -59,7 +59,6 @@ namespace TigerAppWPF
                                 s = sr.ReadLine();
                             }
                             sr.Close();
-                            Engine.getEngine().setIsins(resultat);
                         }
                     }
                     myStream.Close();
@@ -69,6 +68,8 @@ namespace TigerAppWPF
                 {
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message + "\n" + ex.TargetSite + "\n" + ex.StackTrace + "\n" + ex.HelpLink);
                 }
+
+                Engine.getEngine().setIsins(resultat);
             }
         }
 
