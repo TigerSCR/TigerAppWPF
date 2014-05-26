@@ -72,6 +72,11 @@ namespace TigerAppWPF
             get { return isvalide; }
             set { isvalide = value; }
         }
+
+        public string GetNameM_Corp
+        { get { return name_Mcorp; } }
+        public int GetID_Corp
+        { get { return id_Mcorp; } }
         public double Value
         { get { return this.value; } }    
         public bool Oecd

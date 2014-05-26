@@ -15,8 +15,8 @@ namespace TigerAppWPF
 
         }
 
-        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, string dateEmit, string maturity, double duration, int note, bool is_covered )
-            : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp, _nominale, dateEmit, maturity, duration, note)
+        public Corp(string _isin, int _qtty, int _nominale, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, string dateEmit, string maturity, double duration, int rating, bool is_covered )
+            : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp, _nominale, dateEmit, maturity, duration, rating)
         {
             this.is_covered = is_covered;
         }

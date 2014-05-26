@@ -9,9 +9,9 @@ namespace TigerAppWPF
     {
         private int nominale;
         private string dateEmit;
-        private string maturity;
+        private TimeSpan maturity;
         private double duration;
-        private int note;
+        private int rating;
 
         public TitleNominale(string _isin, int _qtty, int _nominale, string _message_err)
             : base(_isin, _qtty, _message_err)
@@ -19,28 +19,41 @@ namespace TigerAppWPF
             this.nominale = _nominale;
         }
 
-        public TitleNominale(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, int _nominale, string dateEmit, string maturity, double duration, int note)
+        public TitleNominale(string _isin, int _qtty, string country, string currency, string name, double value, int _id_Mcorp, string _name_Mcorp, int _nominale, string dateEmit, string maturity, double duration, int rating)
             : base(_isin, _qtty, country, currency, name, value, _id_Mcorp, _name_Mcorp)
         {
             this.nominale = _nominale;
             this.dateEmit = dateEmit;
-            this.maturity = maturity;
+            this.maturity = CalcMaturity(maturity);
             this.duration = duration;
-            this.note = note;
+            this.rating = rating;
             base.VolumeValide();
         }
 
         public int GetNominale
         { get { return nominale; } }
 
+        public int GetRating
+        { get { return rating; } }
+
+        public TimeSpan GetMaturity
+        { get { return maturity; } }
+        public double GetDuration
+        { get { return duration; } }
+
         public override long Volume()
         {
             return base.Volume()*nominale;
         }
 
+        private TimeSpan CalcMaturity(string maturity)
+        {
+            return Convert.ToDateTime(maturity) - Convert.ToDateTime(dateEmit);
+        }
+
         public override string ToCSV()
         {
-            return base.ToCSV() + nominale + ";" + dateEmit + ";" + maturity + ";"+duration+";"+note+";";
+            return base.ToCSV() + nominale + ";" + dateEmit + ";" + maturity + ";"+duration+";"+rating+";";
         }
 
         public override string ToString()
