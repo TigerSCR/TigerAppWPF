@@ -13,6 +13,9 @@ namespace TigerAppWPF
         //modules list
         private ModuleEquity modEqu;
         private ModuleChange modChange;
+        private ModuleConcentration modConc;
+        private ModuleSpread modSpread;
+        private ModuleProperty modProp;
 
 
         private Repartiteur()
@@ -30,7 +33,7 @@ namespace TigerAppWPF
         {
             return t is Equity;
         }
-        private static bool inObligationModule(Title t)
+        private static bool inSpreadModule(Title t)
         {
             return (t is Corp || t is Govt);
         }
@@ -61,12 +64,34 @@ namespace TigerAppWPF
             }
             this.modChange = new ModuleChange(temp);
         }
+
+        public void spread(List<Title> portfolio)
+        {
+            List<Title> temp = new List<Title>();
+            foreach (Title t in portfolio)
+            {
+                if (inSpreadModule(t))
+                    temp.Add(t);
+            }
+            this.modSpread=new ModuleSpread(temp);
+        }
+
+        public void concentration(List<Title> portfolio)
+        {
+            this.modConc = new ModuleConcentration(portfolio);
+        }
 #endregion
 #region Get/Set
         public ModuleEquity ModEqu
         { get { return this.modEqu; } }
         public ModuleChange ModCha
         { get { return this.modChange; } }
+        public ModuleConcentration ModConc
+        { get { return this.modConc; } }
+        public ModuleSpread ModSpread
+        { get { return this.modSpread; } }
+        public ModuleProperty ModProp
+        { get { return this.modProp; } }
 #endregion
     }
 }

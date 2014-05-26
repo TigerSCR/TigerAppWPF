@@ -38,7 +38,7 @@ namespace TigerAppWPF
                 else
                     listByCorporate.Add(t.GetID_Corp, new List<Title>() {t});
             }
-            //supression des titres uniques
+            /*supression des titres uniques DELETED BECAUSE WE DON'T KNOW AND LINA THINKS NO SUPPRESION
             foreach(var v in listByCorporate)
             {
                 if(v.Value.Count==1)
@@ -46,7 +46,7 @@ namespace TigerAppWPF
                     listByCorporate.Remove(v.Key);
                     total--;
                 }
-            }
+            }*/
 
             //somme des valeurs
             foreach(var v in listByCorporate)

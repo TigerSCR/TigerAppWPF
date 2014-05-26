@@ -14,10 +14,10 @@ namespace TigerAppWPF
         {
         }
 
-        public int CalcQuality(string rt_moody, string rt_fitch, string rt_sp)
+        /*public int CalcQuality(string rt_moody, string rt_fitch, string rt_sp)
         {
 
-        }
+        }*/
 
         private int Fitch_Moody(string rt_fitch)
         {
