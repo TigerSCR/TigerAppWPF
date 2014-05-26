@@ -23,7 +23,6 @@ namespace TigerAppWPF
         static private bool isGetType;
         static private bool isGetCurve;
         static private CourbeSwap curve;
-        static private Rating rating;
 
         private Connector()
         {
@@ -312,9 +311,7 @@ namespace TigerAppWPF
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
             request.Append("fields", "YAS_MOD_DUR");
 
-            request.Append("fields", "RTG_MOODY");
-            request.Append("fields", "RTG_FITCH");
-            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
+            request = Rating.AddRating(request);
 
         }
 
@@ -335,9 +332,9 @@ namespace TigerAppWPF
                 double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
 
                 // rating
-                TabRating(fieldData);
+                int rating = Rating.GetQuality(fieldData);
 
-                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1, is_covered);
+                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, 115.5d, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating, is_covered);
             }
 
             catch (NotFoundException e)
@@ -362,9 +359,7 @@ namespace TigerAppWPF
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
 
-            request.Append("fields", "RTG_MOODY");
-            request.Append("fields", "RTG_FITCH");
-            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
+            request = Rating.AddRating(request);
         }
 
 
@@ -380,7 +375,9 @@ namespace TigerAppWPF
                 int id_Mcorp = fieldData.GetElementAsInt32("ID_BB_ULTIMATE_PARENT_CO");
                 string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
 
-                equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp,-1);
+                int rating = Rating.GetQuality(fieldData);
+
+                equit = new Equity(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp,rating);
             }
             catch (NotFoundException e)
             {
@@ -404,9 +401,7 @@ namespace TigerAppWPF
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
             request.Append("fields", "YAS_MOD_DUR");
 
-            request.Append("fields", "RTG_MOODY");
-            request.Append("fields", "RTG_FITCH");
-            request.Append("fields", "RTG_SP_LT_LC_ISSUER_CREDIT");
+            request = Rating.AddRating(request);
         }
 
 
@@ -425,33 +420,15 @@ namespace TigerAppWPF
                 string maturity = fieldData.GetElementAsString("MATURITY");
                 string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
 
-                TabRating(fieldData);
+                int rating = Rating.GetQuality(fieldData);
 
-                govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,-1);
+                govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating);
             }
             catch (NotFoundException e)
             {
                 govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, e.Description());
             }
             l_title.Add(govt);
-        }
-
-        private static string[] TabRating(Element fieldData)
-        {
-            string rt_moody = "", rt_fitch = "", rt_sp = "";
-            if (fieldData.HasElement("RTG_MOODY"))
-                rt_moody = fieldData.GetElementAsString("RTG_MOODY");
-            if (fieldData.HasElement("RTG_FITCH"))
-                rt_fitch = fieldData.GetElementAsString("RTG_FITCH");
-            if (fieldData.HasElement("RTG_SP_LT_LC_ISSUER_CREDIT"))
-                rt_sp = fieldData.GetElementAsString("RTG_SP_LT_LC_ISSUER_CREDIT");
-
-            string[] tabRate = new string[3];
-            tabRate[0] = rt_moody;
-            tabRate[1] = rt_fitch;
-            tabRate[2] = rt_sp;
-
-            return tabRate;
         }
 
         #endregion 
