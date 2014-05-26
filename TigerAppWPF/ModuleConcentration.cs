@@ -27,7 +27,7 @@ namespace TigerAppWPF
             result = 0;
             total=source.Count;
         }
-
+        /*
         protected override void calculate(List<Title> source)
         {
             //répartition par parent
@@ -69,7 +69,7 @@ namespace TigerAppWPF
             { 
                 result+=
             }
-        }
+        }*/
 
         public double Result
         { get { return this.result; } }
