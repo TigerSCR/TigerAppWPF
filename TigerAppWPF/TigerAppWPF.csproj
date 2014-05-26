@@ -80,6 +80,7 @@
       <DependentUpon>RapportView.cs</DependentUpon>
     </Compile>
     <Compile Include="ModuleSpread.cs" />
+    <Compile Include="Rating.cs" />
     <Compile Include="Repartiteur.cs" />
     <Compile Include="Society.cs" />
     <Compile Include="TestProperty.cs" />
