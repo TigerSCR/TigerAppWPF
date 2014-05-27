@@ -94,7 +94,7 @@ namespace TigerAppWPF
                     return l_title;
                 
                 d_title = new Dictionary<string, Tuple<int, int, string>>();
-                int nb_champs = 30;
+                int nb_champs = 25;
                 int nb_request = (_d_title.Count / nb_champs)+1;
                 for (int i = 0; i < _d_title.Count; i += nb_champs)
                 {
@@ -126,7 +126,6 @@ namespace TigerAppWPF
 
                     d_title.Clear();
                 }
-
             return l_title;
         }
 
@@ -310,12 +309,16 @@ namespace TigerAppWPF
             request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "MATURITY");
-            request.Append("fields", "ISSUE_DT");
             request.Append("fields", "NAME");
             request.Append("fields", "IS_COVERED");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
             request.Append("fields", "YAS_MOD_DUR");
+
+            request.Append("fields", "NXT_CPN_DT");
+            request.Append("fields", "DAYS_TO_NEXT_COUPON");
+            request.Append("fields", "CPN");
+            request.Append("fields", "CPN_FREQ");
 
             request = Rating.AddRating(request);
 
@@ -327,7 +330,6 @@ namespace TigerAppWPF
             try
             {
                 string maturity = fieldData.GetElementAsString("MATURITY");
-                string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
                 string name = fieldData.GetElementAsString("NAME");
                 string country = fieldData.GetElementAsString("COUNTRY_ISO");
                 double px_last = fieldData.GetElementAsFloat64("PX_LAST");
@@ -337,10 +339,15 @@ namespace TigerAppWPF
                 string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
                 double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
 
+                string date_cpn = fieldData.GetElementAsString("NXT_CPN_DT");
+                int nb_day_nxt_cpn = fieldData.GetElementAsInt32("DAYS_TO_NEXT_COUPON");
+                double cpn = fieldData.GetElementAsFloat64("CPN");
+                int cpn_freq = fieldData.GetElementAsInt32("CPN_FREQ");
+
                 // rating
                 int rating = Rating.GetQuality(fieldData);
 
-                corp = new Corp(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating, is_covered);
+                corp = new Corp(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp, rating, d_title[security].Item2, date_cpn, maturity, duration, cpn, cpn_freq, nb_day_nxt_cpn, is_covered);
             }
 
             catch (NotFoundException e)
@@ -348,7 +355,7 @@ namespace TigerAppWPF
                 corp = new Corp(security, d_title[security].Item1, d_title[security].Item2,e.Description() );
             }
 
-            //curve.GetValue(dateEmit);
+            //curve.GetValue(date_cpn);
             
             l_title.Add(corp);
         }
@@ -399,13 +406,17 @@ namespace TigerAppWPF
             //request.Append("fields", "MARKET_SECTOR_DES");
             request.Append("fields", "PX_LAST");
             request.Append("fields", "MATURITY");
-            request.Append("fields", "ISSUE_DT");
             request.Append("fields", "DDIS_CURRENCY");
             request.Append("fields", "COUNTRY_ISO");
             request.Append("fields", "NAME");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO");
             request.Append("fields", "ID_BB_ULTIMATE_PARENT_CO_NAME");
             request.Append("fields", "YAS_MOD_DUR");
+
+            request.Append("fields", "NXT_CPN_DT");
+            request.Append("fields", "DAYS_TO_NEXT_COUPON");
+            request.Append("fields", "CPN");
+            request.Append("fields", "CPN_FREQ");
 
             request = Rating.AddRating(request);
         }
@@ -424,11 +435,16 @@ namespace TigerAppWPF
                 string name_Mcorp = fieldData.GetElementAsString("ID_BB_ULTIMATE_PARENT_CO_NAME");
                 double duration = fieldData.GetElementAsFloat64("YAS_MOD_DUR");
                 string maturity = fieldData.GetElementAsString("MATURITY");
-                string dateEmit = fieldData.GetElementAsString("ISSUE_DT");
+
+                string date_cpn = fieldData.GetElementAsString("NXT_CPN_DT");
+                int nb_day_nxt_cpn = fieldData.GetElementAsInt32("DAYS_TO_NEXT_COUPON");
+                double cpn = fieldData.GetElementAsFloat64("CPN");
+                int cpn_freq = fieldData.GetElementAsInt32("CPN_FREQ");
+
 
                 int rating = Rating.GetQuality(fieldData);
 
-                govt = new Govt(security, d_title[security].Item1, d_title[security].Item2, country, currency, name, px_last, id_Mcorp, name_Mcorp, dateEmit, maturity, duration,rating);
+                govt = new Govt(security, d_title[security].Item1, country, currency, name, px_last, id_Mcorp, name_Mcorp, rating, d_title[security].Item2,date_cpn, maturity, duration, cpn, cpn_freq, nb_day_nxt_cpn);
             }
             catch (NotFoundException e)
             {
@@ -465,7 +481,7 @@ namespace TigerAppWPF
             {
                 while ((line = sr.ReadLine()) != null)
                 {
-                    values = line.Split(';');
+                    /*values = line.Split(';');
                     switch (values[0])
                     {
                         case "Equity":
@@ -475,10 +491,11 @@ namespace TigerAppWPF
                             break;
                         case "Corp":
                             if (values.Length == 14)
-                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),int.Parse(values[8]),values[9], values[10], values[11], double.Parse(values[12]), int.Parse(values[13]),bool.Parse(values[14])));
+                                l_title.Add(new Corp(values[1], int.Parse(values[2]),int.Parse(values[3]), values[4], values[5],values[6],double.Parse(values[7]),int.Parse(values[8]),values[9], values[10], values[11], 
+                                    double.Parse(values[12]), int.Parse(values[13]),double.Parse(values[14]),int.Parse(values[15]), int.Parse(values[16]),bool.Parse(values[14])));
                             else l_title.Add(new Corp(values[1], int.Parse(values[2]), int.Parse(values[3]),values[4]));
                             break;
-                    }
+                    }*/
                 }
                 sr.Close();
             }
